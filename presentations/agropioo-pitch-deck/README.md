@@ -26,10 +26,11 @@ pdftoppm -jpeg -r 110 Agropioo-Pitch-Deck.pdf slide
 
 ## Content notes
 
-- Only features actually built in the codebase are claimed (auth, onboarding,
-  AI advisor, disease detection, mandi prices, weather advisory, farms/records,
-  profit & loss, crop planner, 8-locale i18n, ~246 tests). No features from
-  the roadmap/talked-about-only are presented as done.
+- Only features actually built in the codebase are claimed (auth + OTP, AI
+  advisor, disease detection, pest outbreak prediction, mandi prices, weather
+  advisory, farms/records, profit & loss, crop planner, app-control chat,
+  offline PWA, 8-locale i18n, ~268 tests). No features from the
+  roadmap/talked-about-only are presented as done.
 - Impact numbers (`20–40%`, `30–40%`, `15–25%`) are clearly framed as the
   target opportunity (context framing), not measured results, to respect the
   UI-honesty rule.
