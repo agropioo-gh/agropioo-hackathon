@@ -20,7 +20,7 @@ export const en = {
   "notFound.body": "The page you are looking for does not exist or may have moved.",
   "notFound.backHome": "Back to Agropioo home",
   "common.builtForPakistan": "Built for Pakistan",
-  "common.productOfAplinode": "A product of Aplinode",
+  "common.productOfAplinode": "Built for Pakistan",
   "home.hero.eyebrow": "AI-powered farm intelligence platform",
   "home.hero.titleLead": "Intelligence For",
   "home.hero.titleAccent": "Smarter Farming",
@@ -330,7 +330,7 @@ export const en = {
   "feat.hero.ctaPrimary": "Get early access",
   "feat.hero.ctaSecondary": "See how it works",
   "feat.hero.builtFor": "Built for Pakistan",
-  "feat.hero.productOf": "A product of Aplinode",
+  "feat.hero.productOf": "Built for Pakistan",
   "feat.hero.tile1Label": "Leaf scan",
   "feat.hero.tile1Value": "94% ok",
   "feat.hero.tile2Label": "Mandi wheat",
@@ -546,7 +546,7 @@ export const en = {
   "wy.hero.ctaPrimary": "Get early access",
   "wy.hero.ctaSecondary": "Explore the platform",
   "wy.hero.tagStart": "Built for Pakistan",
-  "wy.hero.tagThen": "A product of Aplinode",
+  "wy.hero.tagThen": "Built for Pakistan",
   "wy.hero.svgLabel": "Stylised furrow curves rolling across a field",
   "wy.origin.eyebrow": "Why we built this",
   "wy.origin.heading": "High-stakes decisions shouldn't rest on guesswork",
@@ -705,7 +705,7 @@ export const en = {
   "su.haveAccount": "Already have an account?",
   "app.shell.metadataTitle": "Agropioo — AI-Powered Farm Intelligence Platform",
   "app.shell.metadataDescription":
-    "Today's advisory, weather, alerts, and every Agropioo tool — built for Pakistan. A product of Aplinode.",
+    "Today's advisory, weather, alerts, and every Agropioo tool — built for Pakistan.",
 
   /* ── Shell nav ─────────────────────────────────────── */
   "app.shell.nav.dashboard": "Dashboard",

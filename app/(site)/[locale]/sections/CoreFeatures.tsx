@@ -120,9 +120,6 @@ export default async function CoreFeatures({ locale }: { locale: Locale }) {
               <div className="flex justify-end">
                 <div className="max-w-[85%] rounded-2xl rounded-br-md bg-agro-canopy px-4 py-3 text-sm leading-relaxed text-white shadow-sm sm:max-w-[70%]">
                   {L("home.features.advisorUserMsg")}
-                  <span className="mt-1 block text-right font-mono text-[0.6rem] text-white/60">
-                    08:14
-                  </span>
                 </div>
               </div>
 
@@ -147,14 +144,9 @@ export default async function CoreFeatures({ locale }: { locale: Locale }) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 rounded-full border border-agro-sprout bg-white py-2 ps-4 pe-2 shadow-sm">
-                <span className="flex-1 truncate text-sm text-agro-canopy/60">
+              <div className="flex items-center gap-3 rounded-full border border-agro-sprout bg-white py-2 px-4 shadow-sm">
+                <span className="w-full truncate text-sm text-agro-canopy/60">
                   {L("home.features.advisorInputPlaceholder")}
-                </span>
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-agro-canopy text-white" aria-hidden="true">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-                  </svg>
                 </span>
               </div>
             </div>

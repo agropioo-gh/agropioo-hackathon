@@ -84,7 +84,7 @@ export default async function Hero({ locale }: { locale: Locale }) {
           >
             <span className="font-mono tracking-wide">{L("common.builtForPakistan")}</span>
             <span className="h-1 w-1 rounded-full bg-agro-leaf" aria-hidden="true" />
-            <span>{L("common.productOfAplinode")}</span>
+            <span>{L("common.builtForPakistan")}</span>
           </p>
         </div>
 

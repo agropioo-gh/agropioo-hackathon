@@ -156,16 +156,7 @@ export default async function Footer({ hrefPrefix = "", locale }: { hrefPrefix?:
                 </a>
               </li>
               <li>{t("home.footer.country").text}</li>
-              <li>
-                <a
-                  href="http://aplinode.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-white underline-offset-4 transition-colors hover:text-agro-sprout hover:underline"
-                >
-                  {t("common.productOfAplinode").text}
-                </a>
-              </li>
+              <li>{t("common.builtForPakistan").text}</li>
             </ul>
           </div>
         </div>

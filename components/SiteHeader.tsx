@@ -303,7 +303,7 @@ export default function SiteHeader({
               </>
             )}
             <p className="mt-3 text-center font-mono text-xs tracking-wide text-agro-slate">
-              Built for Pakistan · A product of Aplinode
+              Built for Pakistan
             </p>
           </div>
         </aside>

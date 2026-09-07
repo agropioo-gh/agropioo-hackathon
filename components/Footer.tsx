@@ -18,15 +18,7 @@ export function Footer() {
               Soil and signal — intelligent agriculture, beginning in Pakistan.
             </p>
             <p className="mt-3 text-sm text-agro-slate">
-              A product of{" "}
-              <a
-                href="http://aplinode.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-agro-canopy underline decoration-agro-sprout underline-offset-4 transition-colors hover:decoration-agro-canopy"
-              >
-                Aplinode
-              </a>
+              Built for farmers in Pakistan.
             </p>
           </div>
 
@@ -44,7 +36,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col gap-2 border-t border-agro-sprout/60 pt-6 text-xs text-agro-slate sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Aplinode. Agropioo is a product of Aplinode.</p>
+          <p>© 2026 Agropioo. Built for farmers.</p>
           <p>Made for farmers.</p>
         </div>
       </div>
