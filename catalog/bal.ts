@@ -715,6 +715,7 @@ export const bal: Partial<Record<CatalogKey, string>> = {
   "app.shell.nav.notifications": "اطلاعات",
   "app.shell.nav.settings": "ترتیبات",
 
+  "app.shell.nav.pest": "کیڑوں دا الرٹ",
   "app.shell.nav.more": "مزید",
   "app.shell.signOut": "لاگ آؤٹ",
   "app.shell.aria.farmerTools": "کسان کے اوزار",
@@ -936,7 +937,7 @@ export const bal: Partial<Record<CatalogKey, string>> = {
   "app.records.new.success.description":
     "مکمل بلڈ میں یہ اندراج آپ کے کھیت کے ریکارڈ میں شامل ہوگا اور مستقبل کی رہنمائیاں تیز ہوں گی۔",
   "app.records.new.success.backToDashboard": "واپس ڈیش بورڈ پر",
-  "app.records.new.success.viewFarms": "میرے کھیت دیکھیں",
+  "app.records.new.success.viewFarms": "اس کھیت پر جاؤ",
   "app.records.new.errors.farmRequired": "منتخب کریں یہ کس کھیت پر ہوا۔",
   "app.records.new.errors.dateRequired": "تاریخ منتخب کریں۔",
 
