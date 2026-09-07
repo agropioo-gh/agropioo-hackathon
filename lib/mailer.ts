@@ -33,7 +33,11 @@ function getTransporter(): Transporter | null {
   return transporter;
 }
 
-export type SendCodeResult = { delivered: boolean };
+export type SendCodeResult = { delivered: boolean; demoCode?: string };
+
+function demoModeActive(): boolean {
+  return !smtpConfigured() && process.env.DEMO_MODE === "true";
+}
 
 export async function sendCode(
   purpose: CodePurpose,
@@ -43,6 +47,9 @@ export async function sendCode(
   const configured = smtpConfigured();
 
   if (!configured) {
+    if (demoModeActive()) {
+      return { delivered: false, demoCode: code };
+    }
     return { delivered: false };
   }
 
