@@ -223,7 +223,7 @@ Production agentic chat interfaces (e.g., ChatGPT with function calling, Claude 
 **Existing tables relevant to app-control actions**:
 - `farms` — `id`, `account_id`, `name`, `location`, `district`, `lat`, `lng`, `crops` (jsonb), `acres`, `growth_stages` (jsonb), `archived_at`.
 - `records` — `id`, `farm_id`, `account_id`, `type`, `season`, `year`, `event_date`, `title`, `note`, `weather` (jsonb), `yield_qty`, `labor_cost`, `transport_cost`.
-- `users` — `id`, `email`, `full_name`, `phone`, `password_hash`.
+- `users` — `id`, `email`, `full_name`, `password_hash` *(phone column dropped in migration 0017 per FR1.1)*.
 - `sessions` — `id`, `account_id`, `created_at`, `expires_at`, `revoked_at`.
 
 **Database client**: `lib/db.ts:22-66` — single `Pool` instance, `query<T>()`, `queryOne<T>()`, `withTransaction<T>()`. All route handlers import from this module.

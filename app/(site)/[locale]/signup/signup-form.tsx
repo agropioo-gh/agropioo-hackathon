@@ -19,7 +19,6 @@ export type SignupErrorCopy = {
   passwordRequired: string;
   passwordMin: string;
   passwordMax: string;
-  phoneInvalid: string;
   confirmRequired: string;
   termsRequired: string;
   passwordMismatch: string;
@@ -47,10 +46,6 @@ export type SignupCopy = {
   namePlaceholder: string;
   emailLabel: string;
   emailPlaceholder: string;
-  phoneLabel: string;
-  phoneOptional: string;
-  phonePlaceholder: string;
-  phoneNote: string;
   passwordLabel: string;
   passwordPlaceholder: string;
   confirmPasswordLabel: string;
@@ -83,7 +78,6 @@ const ERROR_KEYS: Record<string, keyof Omit<SignupErrorCopy, "tooManyAttempts" |
   "Choose a password.": "passwordRequired",
   "Use at least 8 characters.": "passwordMin",
   "Use at most 64 characters.": "passwordMax",
-  "Enter a valid phone number.": "phoneInvalid",
   "Repeat your password.": "confirmRequired",
   "Please accept the terms to continue.": "termsRequired",
   "Passwords do not match.": "passwordMismatch",
@@ -114,7 +108,6 @@ export default function SignupForm({ copy }: { copy: SignupCopy }) {
     defaultValues: {
       name: "",
       email: "",
-      phone: "",
       password: "",
       confirmPassword: "",
       terms: false,
@@ -316,32 +309,7 @@ export default function SignupForm({ copy }: { copy: SignupCopy }) {
                   )}
                 </div>
 
-                <div>
-                  <label htmlFor="signup-phone" className="block text-sm font-semibold text-agro-ink">
-                    {copy.phoneLabel}{" "}
-                    <span className="font-normal text-agro-slate">{copy.phoneOptional}</span>
-                  </label>
-                  <input
-                    id="signup-phone"
-                    type="tel"
-                    dir="ltr"
-                    autoComplete="tel"
-                    placeholder={copy.phonePlaceholder}
-                    aria-invalid={Boolean(errors.phone)}
-                    aria-describedby={errors.phone ? "signup-phone-error" : undefined}
-                    {...register("phone")}
-                    className={inputClass(errors.phone)}
-                  />
-                  {errors.phone ? (
-                    <p id="signup-phone-error" className="mt-1.5 text-sm text-agro-error">
-                      {errorText(errors.phone.message)}
-                    </p>
-                  ) : (
-                    <p className="mt-1.5 text-xs text-agro-slate">{copy.phoneNote}</p>
-                  )}
-                </div>
-
-                <div>
+<div>
                   <label htmlFor="signup-password" className="block text-sm font-semibold text-agro-ink">
                     {copy.passwordLabel}
                   </label>

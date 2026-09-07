@@ -30,7 +30,7 @@ export async function POST(request: Request): Promise<Response> {
     if (!parsed.success) {
       return errorResponse("validation_error", COPY.VALIDATION_FALLBACK, 400);
     }
-    const { name, email, phone, password } = parsed.data;
+    const { name, email, password } = parsed.data;
 
     if (
       !hitLimiter(
@@ -67,10 +67,10 @@ export async function POST(request: Request): Promise<Response> {
       const passwordHash = await bcrypt.hash(password, BCRYPT_COST);
       try {
         account = await queryOne<UserRow>(
-          `INSERT INTO users (email, full_name, phone, password_hash)
-           VALUES (lower($1), $2, $3, $4)
+          `INSERT INTO users (email, full_name, password_hash)
+           VALUES (lower($1), $2, $3)
            RETURNING *`,
-          [email, name, phone, passwordHash]
+          [email, name, passwordHash]
         );
       } catch (insertError) {
         // Concurrent race on lower(email): exactly one insert wins; the loser

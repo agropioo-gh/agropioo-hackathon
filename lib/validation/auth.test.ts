@@ -11,7 +11,6 @@ describe("signupSchema", () => {
   const valid = {
     name: "  Muhammad Ahmad ",
     email: "  Farmer@Example.COM ",
-    phone: "+92 300 1234567",
     password: "wheat-2026",
     confirmPassword: "wheat-2026",
     terms: true,
@@ -23,16 +22,9 @@ describe("signupSchema", () => {
     expect(parsed.name).toBe("Muhammad Ahmad");
   });
 
-  it("coerces empty/missing phone to null", () => {
-    const parsed = signupSchema.parse({ ...valid, phone: "" });
-    expect(parsed.phone).toBeNull();
-    const omitted = signupSchema.parse({ ...valid, phone: undefined });
-    expect(omitted.phone).toBeNull();
-  });
-
-  it("rejects malformed phones", () => {
-    expect(signupSchema.safeParse({ ...valid, phone: "abc" }).success).toBe(false);
-    expect(signupSchema.safeParse({ ...valid, phone: "12" }).success).toBe(false);
+  it("silently strips a stale phone key (FR1.1)", () => {
+    const parsed = signupSchema.parse({ ...valid, phone: "+92 300 1234567" });
+    expect((parsed as Record<string, unknown>).phone).toBeUndefined();
   });
 
   it("rejects passwords shorter than 8 or longer than 64 chars", () => {
