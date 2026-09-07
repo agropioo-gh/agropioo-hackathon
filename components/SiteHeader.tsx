@@ -164,29 +164,38 @@ export default function SiteHeader({
 
           <div className="flex items-center gap-2 lg:hidden">
             <LanguageSwitcher label={strings.languageSwitcher} />
-            <button
-              type="button"
-              className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-agro-forest transition-colors hover:bg-agro-mint"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-expanded={mobileMenuOpen}
-              aria-haspopup="dialog"
-              aria-label={strings.openMenu}
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                aria-hidden="true"
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-agro-canopy text-sm font-bold text-white transition-colors hover:bg-agro-forest"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+                {initials}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-agro-forest transition-colors hover:bg-agro-mint"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-expanded={mobileMenuOpen}
+                aria-haspopup="dialog"
+                aria-label={strings.openMenu}
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -303,7 +312,7 @@ export default function SiteHeader({
               </>
             )}
             <p className="mt-3 text-center font-mono text-xs tracking-wide text-agro-slate">
-              Built for Pakistan · A product of Aplinode
+              Built for Pakistan
             </p>
           </div>
         </aside>

@@ -24,9 +24,7 @@ export default async function FarmerAppLayout({ children }: { children: ReactNod
         </main>
       </div>
       <BottomTabBar bundle={bundle} />
-      <LayoutWithPageContext>
-        <AppControlFloatingChat bundle={appControlBundle} />
-      </LayoutWithPageContext>
+      <AppControlFloatingChat bundle={appControlBundle} />
     </div>
   );
 }

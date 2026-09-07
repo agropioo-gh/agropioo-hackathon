@@ -20,7 +20,7 @@ export const EMAIL_TEMPLATE = {
   header: `
     <div style="background: linear-gradient(135deg, #1a472a 0%, #2d6a4f 100%); padding: 24px 0; text-align: center;">
       <a href="https://agropioo.com" style="text-decoration: none;">
-        <img src="https://agropioo.com/logo.svg" alt="Agropioo" style="height: 32px; width: auto; display: block; margin: 0 auto;" />
+        <img src="https://res.cloudinary.com/zvo3skb2/image/upload/v1788780445/agropioo/logo.png" alt="Agropioo" style="height: 32px; width: auto; display: block; margin: 0 auto;" />
       </a>
     </div>
   `,

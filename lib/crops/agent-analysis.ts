@@ -102,7 +102,7 @@ export async function generateAgentAnalysis(
   ${price ? `Price: Rs ${price.price_per_maan_pkr}/maund, trend: ${price.trend}` : "Price data unavailable"}`;
     }).join("\n\n");
 
-    const client = new OpenAI({ apiKey });
+    const client = new OpenAI({ apiKey, baseURL: process.env.OPENAI_BASE_URL });
     const model = process.env.ADVISOR_MODEL ?? "gpt-4o-mini";
 
     const response = await client.chat.completions.create({

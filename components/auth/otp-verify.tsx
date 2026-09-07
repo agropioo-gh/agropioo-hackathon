@@ -103,12 +103,19 @@ export default function OtpVerify({
       return;
     }
     const next = [...digits];
-    next[index] = clean[clean.length - 1];
+    if (clean.length === 1) {
+      next[index] = clean[0];
+    } else {
+      for (let i = 0; i < clean.length && index + i < CODE_LENGTH; i++) {
+        next[index + i] = clean[i];
+      }
+    }
     setDigits(next);
-    if (index < CODE_LENGTH - 1) {
-      focusBox(index + 1);
-    } else if (next.every((digit) => digit !== "")) {
+    const filledCount = next.filter((digit) => digit !== "").length;
+    if (filledCount === CODE_LENGTH) {
       void checkCode(next.join(""));
+    } else {
+      requestAnimationFrame(() => focusBox(filledCount));
     }
   }
 
@@ -129,12 +136,15 @@ export default function OtpVerify({
     event.preventDefault();
     const clean = event.clipboardData.getData("text").replace(/[^0-9]/g, "");
     if (!clean) return;
-    const next = Array(CODE_LENGTH)
-      .fill("")
-      .map((_, i) => clean[i] ?? "");
+    const startIndex = digits.findIndex((digit) => digit === "");
+    const effectiveStart = startIndex === -1 ? 0 : startIndex;
+    const next = Array(CODE_LENGTH).fill("");
+    for (let i = 0; i < clean.length && effectiveStart + i < CODE_LENGTH; i++) {
+      next[effectiveStart + i] = clean[i];
+    }
     setDigits(next);
-    const filledCount = Math.min(clean.length, CODE_LENGTH);
-    if (clean.length >= CODE_LENGTH) {
+    const filledCount = next.filter((d) => d !== "").length;
+    if (filledCount === CODE_LENGTH) {
       void checkCode(next.join(""));
     } else {
       requestAnimationFrame(() => focusBox(filledCount));

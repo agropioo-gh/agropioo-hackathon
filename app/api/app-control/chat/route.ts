@@ -5,6 +5,7 @@ import { hitLimiter, HOUR_MS } from "@/lib/auth/rate-limit";
 import { appControlChatSchema, attachmentSchema } from "@/lib/validation/app-control";
 import { createAppControlAgent, type AppControlContext } from "@/lib/app-control/agent";
 import { toAppControlSSEStream, sseHeaders } from "@/lib/app-control/streaming";
+import "@/lib/openai-config";
 import { run } from "@openai/agents";
 import { v2 as cloudinary } from "cloudinary";
 
