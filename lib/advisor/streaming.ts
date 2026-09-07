@@ -66,7 +66,7 @@ async function generateAndSaveSummary(
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) return;
 
-    const client = new OpenAI({ apiKey });
+    const client = new OpenAI({ apiKey, baseURL: process.env.OPENAI_BASE_URL });
     const response = await client.chat.completions.create({
       model: process.env.ADVISOR_MODEL ?? "gpt-4o-mini",
       messages: [

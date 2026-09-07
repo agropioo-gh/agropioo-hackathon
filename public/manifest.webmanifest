@@ -1,0 +1,22 @@
+{
+  "name": "Agropioo — AI-Powered Farm Intelligence",
+  "short_name": "Agropioo",
+  "description": "AI advisor, market prices, and digital farm records for Pakistani farmers.",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#F0FDF4",
+  "theme_color": "#F0FDF4",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
