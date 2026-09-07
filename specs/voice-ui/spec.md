@@ -82,16 +82,16 @@ Before executing any write action (create, update, delete, archive), the voice a
 ### FR-19 Destructive Action Confirmation
 Before executing any destructive action (delete, archive, permanent removal), the voice agent asks the farmer to confirm via voice. The agent waits for an explicit affirmative response before proceeding. If the farmer does not confirm, the action is cancelled and the agent explains what happened.
 
-### FR-17 Processing Feedback
+### FR-20 Processing Feedback
 While the agent is processing a request, it provides spoken status updates at key milestones: acknowledging the request, indicating it is fetching data or creating a record, and confirming completion. Visual feedback (loading indicator, status text) is shown alongside the spoken updates.
 
-### FR-18 Emergency Stop
+### FR-21 Emergency Stop
 Tapping the mic button while the agent is speaking immediately stops all audio playback and cancels any in-progress agent action. The app returns to idle state, ready for a new voice command.
 
-### FR-19 Follow-Up Dialogue
+### FR-22 Follow-Up Dialogue
 If the farmer's voice command is missing required information or ambiguous, the agent asks one or more clarifying questions via voice. The conversation continues in voice until the agent has enough information to execute the action, or until the farmer explicitly cancels. The agent waits up to 30 seconds for each confirmation before timing out and asking if the farmer wants to continue or cancel.
 
-### FR-20 Structured Data Presentation
+### FR-23 Structured Data Presentation
 When the agent needs to present structured data (price lists, farm summaries, weather forecasts), it reads the data aloud in a clear, organized format. For lists, the agent reads each item with its key details. For tables, the agent presents the most relevant columns. The agent offers to navigate to the relevant page for full details after presenting the summary.
 
 ## Edge Cases & Rules
@@ -125,7 +125,7 @@ When the agent needs to present structured data (price lists, farm summaries, we
 ## Acceptance Criteria
 
 - [ ] Voice requests are processed through dedicated server endpoints for transcription and agent action.
-- [ ] The floating mic button and voice UI are managed by a single overlay component in the root dashboard layout, persisting across all pages.
+- [ ] The floating mic button and voice UI are managed by a single overlay component in the root dashboard layout, persisting across all pages. (FR-17)
 - [ ] A floating microphone button with waveform animation is visible in the bottom corner on every authenticated farmer app page, separate from the chat icon.
 - [ ] Tapping the mic starts recording; auto-stop on silence sends audio for transcription.
 - [ ] Transcription auto-detects the spoken language across all 8 locales.
