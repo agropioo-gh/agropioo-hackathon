@@ -54,7 +54,6 @@ create table accounts (
   id            uuid primary key default gen_random_uuid(),
   email         text not null,
   full_name     text not null,
-  phone         text,
   password_hash text not null,
   email_verified boolean not null default false,
   created_at    timestamptz not null default now(),

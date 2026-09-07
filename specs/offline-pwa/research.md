@@ -32,9 +32,9 @@ Feature #14 from `docs/Agropioo_features.md`. Listed as a "Wow Factor" (green ti
 - No `twilio` package in `package.json`.
 - No Twilio configuration in `.env.example` or `.env`.
 - The only alerting channel for weather alerts (the closest analog) is email via `nodemailer` + SMTP in `lib/weather/alerts.ts:159-193`, plus in-app notifications stored in the `weather_alerts` table.
-- The `users` table (`db/migrations/0002_auth.sql`) has a `phone` column (text), so phone numbers are already collected at signup — though not currently used for SMS.
+- **Update (post-FR1.1):** the `users.phone` column was dropped in `db/migrations/0017_drop_users_phone.sql`. Phone capture for SMS must be re-introduced in a future migration before Twilio ships.
 
-**Conclusion**: Twilio is a new dependency requiring approval. The phone number field already exists in the user model.
+**Conclusion**: Twilio is a new dependency requiring approval. Phone capture must be re-introduced (column + form field + validation) in a future spec before the SMS channel ships.
 
 ### 3. Data That Needs Offline Support
 
@@ -100,10 +100,10 @@ Based on the feature description and existing codebase patterns:
 - Email delivery via `nodemailer` + SMTP
 - The `sent_via` column already supports an array — adding `"sms"` alongside `"email"` and `"in_app"` is a natural extension
 
-The `users` table has a `phone` column. Twilio would need:
-- Account SID + Auth Token (env vars)
-- A Twilio phone number (env var)
-- An API route to send SMS (Route Handler, consistent with the architecture)
+The `users` table no longer has a `phone` column (dropped in migration 0017). When SMS ships, the spec must include:
+- Re-add the `users.phone` column (nullable) via migration
+- Add the phone field back to the signup or settings flow
+- Twilio: Account SID + Auth Token (env vars)
 
 ### 7. Translation System
 

@@ -80,7 +80,7 @@ Let a farmer create an account, prove they own their email with a simple code, a
 ## Edge cases & rules
 
 - Malformed or missing fields on ANY endpoint → standard validation error; nothing reaches the database; no pass is issued.
-- Trimming/case: emails trimmed and lowercased before every comparison and at storage; names trimmed; phone stored as typed (trimmed).
+- Trimming/case: emails trimmed and lowercased before every comparison and at storage; names trimmed.
 - All pass expiry and code expiry checked SERVER-side against server time (UTC); client clocks never trusted.
 - Tampered signature, expired stamp, wrong type, missing cookie — four different causes, ONE identical neutral outcome (FR11); logs may distinguish internally, responses never do.
 - Stale tab: farmer verifies in one tab; a second tab sitting on the OTP screen submits next → its pass is already consumed → clean neutral rejection and ejection, no crash.
@@ -109,7 +109,7 @@ Let a farmer create an account, prove they own their email with a simple code, a
 ## Acceptance criteria
 
 - [ ] Signup with valid data creates an unverified account, delivers a real 6-digit email (or demo banner exactly when SMTP is unconfigured AND DEMO_MODE=true), and sets an httpOnly verify pass
-- [ ] Duplicate VERIFIED email → explicit registered-message with working links; duplicate UNVERIFIED email → fresh code + pass, no error, and ORIGINAL name/phone/password untouched (first-write-wins)
+- [ ] Duplicate VERIFIED email → explicit registered-message with working links; duplicate UNVERIFIED email → fresh code + pass, no error, and ORIGINAL name/password untouched (first-write-wins)
 - [ ] Plaintext password never appears in any table column, log line, or error (inspect DB + logs)
 - [ ] Correct password on unverified account → blocked with verification screen; wrong password vs unknown email → byte-identical error + comparable latency
 - [ ] curl/Postman WITHOUT a pass, with a FORGED pass, with an EXPIRED pass, and with the WRONG-TYPE pass (e.g. session token on verify API) → all rejected identically; nothing executes

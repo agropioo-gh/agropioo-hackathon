@@ -32,7 +32,7 @@ No expert role. No community feature.
 
 | Route | Purpose | Status |
 |---|---|---|
-| `/signup` | Create account (name, email, phone, password, strength indicator, terms) | Built |
+| `/signup` | Create account (name, email, password, strength indicator, terms) | Built |
 | `/login` | Sign in (email/password, show/hide) | Built |
 | `/verify` | OTP email verification (signup + password reset) | Built |
 | `/forgot-password` | 3-step password recovery flow | Built |
