@@ -83,56 +83,63 @@ export default async function Hero({ locale }: { locale: Locale }) {
             style={{ "--rise-delay": "0.32s" } as React.CSSProperties}
           >
             <span className="font-mono tracking-wide">{L("common.builtForPakistan")}</span>
-            <span className="h-1 w-1 rounded-full bg-agro-leaf" aria-hidden="true" />
-            <span>{L("common.productOfAplinode")}</span>
           </p>
         </div>
 
         <div className="relative mx-auto w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
-          <div className="relative h-[420px] w-full sm:h-[520px] lg:h-[560px]">
-            <div className="absolute left-1/2 top-1/2 aspect-square h-[118%] -translate-x-1/2 -translate-y-1/2 sm:h-[124%] lg:left-0 lg:h-[134%] lg:-translate-x-0">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-agro-mint via-agro-mint to-agro-sprout/40" />
+          <div className="relative aspect-square w-full sm:aspect-[4/5] sm:max-h-[520px] lg:max-h-[560px]">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-agro-mint via-agro-mint to-agro-sprout/40 sm:left-0 sm:top-1/2 sm:h-[120%] sm:w-full sm:-translate-y-1/2" />
 
-              <svg
-                className="drift absolute left-[4%] top-[4%] h-[92%] w-[92%] text-agro-leaf/50"
-                viewBox="0 0 400 400"
-                fill="none"
-                aria-hidden="true"
-              >
-                <circle cx="200" cy="200" r="164" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 10" />
-                <circle cx="200" cy="200" r="136" stroke="currentColor" strokeWidth="1.5" strokeDasharray="8 8" opacity="0.7" />
-                <circle cx="200" cy="18" r="4" fill="var(--color-agro-leaf)" stroke="none" />
-              </svg>
+            <svg
+              className="drift absolute left-[4%] top-[4%] h-[92%] w-[92%] text-agro-leaf/50 sm:hidden"
+              viewBox="0 0 400 400"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle cx="200" cy="200" r="164" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 10" />
+              <circle cx="200" cy="200" r="136" stroke="currentColor" strokeWidth="1.5" strokeDasharray="8 8" opacity="0.7" />
+              <circle cx="200" cy="18" r="4" fill="var(--color-agro-leaf)" stroke="none" />
+            </svg>
 
-              <div className="absolute inset-0 overflow-hidden rounded-full">
-                <Image
-                  src="/hero-farmer.png"
-                  alt={t("home.hero.imageAlt").text}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-center"
-                  priority
-                />
-              </div>
+            <svg
+              className="drift absolute left-0 top-1/2 hidden h-[110%] w-full -translate-y-1/2 text-agro-leaf/50 sm:block"
+              viewBox="0 0 400 400"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle cx="200" cy="200" r="164" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 10" />
+              <circle cx="200" cy="200" r="136" stroke="currentColor" strokeWidth="1.5" strokeDasharray="8 8" opacity="0.7" />
+              <circle cx="200" cy="18" r="4" fill="var(--color-agro-leaf)" stroke="none" />
+            </svg>
 
-              {readings.map((reading, index) => (
-                <div
-                  key={`${index}`}
-                  className={`rise absolute z-10 w-[7.5rem] rounded-xl border border-agro-clay/70 bg-white/95 p-2.5 shadow-lg backdrop-blur-sm sm:w-36 sm:p-4 ${reading.position}`}
-                  style={{ "--rise-delay": `${0.4 + index * 0.12}s` } as React.CSSProperties}
-                >
-                  <p className="flex items-center gap-1.5 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-agro-canopy">
-                    <span className="h-1.5 w-1.5 rounded-full bg-agro-success" aria-hidden="true" />
-                    {reading.label}
-                  </p>
-                  <p className="mt-1.5 font-mono text-2xl font-bold tracking-tight text-agro-ink sm:text-[1.75rem]">
-                    {reading.value}
-                    {reading.suffix}
-                  </p>
-                  <p className="text-xs font-medium text-agro-slate">{reading.note}</p>
-                </div>
-              ))}
+            <div className="absolute inset-0 overflow-hidden rounded-full">
+              <Image
+                src="/hero-farmer.png"
+                alt={t("home.hero.imageAlt").text}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center"
+                priority
+              />
             </div>
+
+            {readings.map((reading, index) => (
+              <div
+                key={`${index}`}
+                className={`rise absolute z-10 hidden w-[7rem] rounded-xl border border-agro-clay/70 bg-white/95 p-2.5 shadow-lg backdrop-blur-sm sm:block sm:w-36 sm:p-4 ${reading.position}`}
+                style={{ "--rise-delay": `${0.4 + index * 0.12}s` } as React.CSSProperties}
+              >
+                <p className="flex items-center gap-1.5 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-agro-canopy">
+                  <span className="h-1.5 w-1.5 rounded-full bg-agro-success" aria-hidden="true" />
+                  {reading.label}
+                </p>
+                <p className="mt-1.5 font-mono text-2xl font-bold tracking-tight text-agro-ink sm:text-[1.75rem]">
+                  {reading.value}
+                  {reading.suffix}
+                </p>
+                <p className="text-xs font-medium text-agro-slate">{reading.note}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

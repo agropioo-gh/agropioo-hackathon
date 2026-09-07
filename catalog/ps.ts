@@ -17,7 +17,7 @@ export const ps: Partial<Record<CatalogKey, string>> = {
   "notFound.body": "هغه صفحه چې تاسو لټوي شته نه دی یا بدله شوی وي.",
   "notFound.backHome": "اګروپیو اصلي په شته برګرئ",
   "common.builtForPakistan": "پاکستان لپاره جوړ شوی",
-  "common.productOfAplinode": "اپلینوډ ته یوه پروډکټ",
+  "common.productOfAplinode": "پاکستان لپاره جوړ شوی",
   "home.hero.eyebrow": "مصنوعی هوښه پر بڼه د ځمکی هوښه پلیټفارم",
   "home.hero.titleLead": "تر اټکل لپاره",
   "home.hero.titleAccent": "泽赫نه کښتکاری",

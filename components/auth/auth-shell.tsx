@@ -44,7 +44,7 @@ export default function AuthShell({
             <Image src={logoOnDark} alt="Agropioo" className="h-14 w-auto" />
           </Link>
           <p className="mt-2 font-mono text-xs uppercase tracking-[0.22em] text-agro-sprout/80">
-            A product of Aplinode
+            Built for Pakistan
           </p>
         </div>
 

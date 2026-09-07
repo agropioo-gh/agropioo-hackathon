@@ -3,6 +3,7 @@ import { requireSessionApi } from "@/lib/auth/guards";
 import { errorResponse, clientIp } from "@/lib/http";
 import { hitLimiter, HOUR_MS } from "@/lib/auth/rate-limit";
 import { createDetectAgent } from "@/lib/detect/chat-agent";
+import "@/lib/openai-config";
 import { run } from "@openai/agents";
 import { toSSEStream } from "@/lib/advisor/streaming";
 
