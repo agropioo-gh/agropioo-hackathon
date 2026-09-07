@@ -10,7 +10,7 @@ Let a farmer create an account, prove they own their email with a simple code, a
 
 ## User scenarios
 
-1. **Farmer fills the signup form** (name, email, optional phone, password, terms) → account created unverified → server hands them a short-lived verification pass → they land on the shared OTP screen told a 6-digit code was emailed.
+1. **Farmer fills the signup form** (name, email, password, terms) → account created unverified → server hands them a short-lived verification pass → they land on the shared OTP screen told a 6-digit code was emailed.
 2. **Farmer enters the correct 6-digit code within the hour** → pass and code are consumed (neither works again) → account becomes verified → success screen with a single path: "Sign in" → `/login`.
 3. **Farmer signs in with email + password** (no OTP at login) → server issues a fresh session pass (valid 7 days) → they land inside the app (first-time users continue into `/onboarding`).
 4. **Farmer who hasn't verified yet signs in with the CORRECT password** → blocked with a "verify your email" message and taken into the verification screen where a fresh code can be requested.
@@ -25,8 +25,9 @@ Let a farmer create an account, prove they own their email with a simple code, a
 
 ### Signup
 
-- **FR1 Fields & rules (match ready form).** Name (required, non-empty), email (valid format), phone (optional; if given must look like a real number), password (8–64 characters), confirm password (must match), terms acceptance (required). Client-side inline errors stay; the server independently re-validates everything and rejects with field-level messages.
-- **FR2 Duplicate handling.** Signing up with an email that already belongs to a VERIFIED account shows an explicit "This email is already registered" message with links to log in or reset the password. Signing up again with an UNVERIFIED email does not error — it re-runs verification for that same pending account (fresh code, fresh pass). Re-signup NEVER overwrites stored data: the FIRST submission's name, phone, and password hash are final (first-write-wins), including under concurrent races — parallel signups for one unverified email resolve to that ONE pending account.
+- **FR1 Fields & rules (match ready form).** Name (required, non-empty), email (valid format), password (8–64 characters), confirm password (must match), terms acceptance (required). Client-side inline errors stay; the server independently re-validates everything and rejects with field-level messages. Phone capture is deferred post-launch — see FR1.1.
+- **FR1.1 Phone deferred.** Phone number is NOT collected at signup and NOT stored on the `users` row. The `users.phone` column is dropped (migration). Capture of phone for SMS-based offline alerts (`feat.voice.*` in the catalogue) lands in a later settings/onboarding change once the SMS channel is built; it is out of scope for demo per constitution. Any stale signup submission that includes `phone` is silently ignored by the server (field ignored, no error).
+- **FR2 Duplicate handling.** Signing up with an email that already belongs to a VERIFIED account shows an explicit "This email is already registered" message with links to log in or reset the password. Signing up again with an UNVERIFIED email does not error — it re-runs verification for that same pending account (fresh code, fresh pass). Re-signup NEVER overwrites stored data: the FIRST submission's name and password hash are final (first-write-wins), including under concurrent races — parallel signups for one unverified email resolve to that ONE pending account.
 - **FR3 Password storage.** Only an irreversible hash of the password is ever persisted; plaintext appears nowhere in the database, logs, or errors. Confirm-password exists only at the form layer.
 - **FR4 Post-signup state.** A newly created account cannot sign in until its email is verified (scenario 4). No SESSION is created at signup — only the verification pass (FR7).
 

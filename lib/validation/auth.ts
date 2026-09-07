@@ -15,8 +15,6 @@ const passwordSchema = z
   .min(8, "Use at least 8 characters.")
   .max(64, "Use at most 64 characters.");
 
-const phonePattern = /^[+\d][\d\s-]{7,14}$/;
-
 export const signupSchema = z
   .object({
     name: z
@@ -25,19 +23,6 @@ export const signupSchema = z
       .min(1, "Enter your full name.")
       .max(80, "Use at most 80 characters."),
     email: normalizedEmailSchema,
-    phone: z
-      .string()
-      .nullish()
-      .transform((value) => {
-        const trimmed = (value ?? "").trim();
-        return trimmed.length === 0 ? null : trimmed;
-      })
-      .pipe(
-        z
-          .string()
-          .regex(phonePattern, "Enter a valid phone number.")
-          .nullable(),
-      ),
     password: passwordSchema,
     confirmPassword: z.string({ message: "Repeat your password." }),
     terms: z.boolean().refine((value) => value === true, {
@@ -48,6 +33,9 @@ export const signupSchema = z
     message: "Passwords do not match.",
     path: ["confirmPassword"],
   });
+// FR1.1: phone capture is deferred (SMS channel out of scope for demo).
+// Zod's default strip-on-unknown silently drops any stale `phone` key
+// a client sends — no error, no storage.
 
 export type SignupInput = z.infer<typeof signupSchema>;
 

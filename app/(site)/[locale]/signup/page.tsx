@@ -22,7 +22,6 @@ export default async function SignupPage({ params }: { params: Promise<{ locale:
     passwordRequired: string;
     passwordMin: string;
     passwordMax: string;
-    phoneInvalid: string;
     confirmRequired: string;
     termsRequired: string;
     passwordMismatch: string;
@@ -35,7 +34,6 @@ export default async function SignupPage({ params }: { params: Promise<{ locale:
     passwordRequired: t("auth.err.passwordRequired").text,
     passwordMin: t("auth.err.passwordMin").text,
     passwordMax: t("auth.err.passwordMax").text,
-    phoneInvalid: t("auth.err.phoneInvalid").text,
     confirmRequired: t("auth.err.confirmRequired").text,
     termsRequired: t("auth.err.termsRequired").text,
     passwordMismatch: t("auth.err.passwordMismatch").text,
@@ -69,10 +67,6 @@ export default async function SignupPage({ params }: { params: Promise<{ locale:
     namePlaceholder: t("su.name.placeholder").text,
     emailLabel: t("auth.emailLabel").text,
     emailPlaceholder: t("auth.emailPlaceholder").text,
-    phoneLabel: t("su.phone.label").text,
-    phoneOptional: t("su.phone.optional").text,
-    phonePlaceholder: t("su.phone.placeholder").text,
-    phoneNote: t("su.phone.note").text,
     passwordLabel: t("auth.passwordLabel").text,
     passwordPlaceholder: t("su.password.placeholder").text,
     confirmPasswordLabel: t("su.confirm.label").text,
