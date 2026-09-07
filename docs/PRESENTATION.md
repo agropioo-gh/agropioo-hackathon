@@ -1,7 +1,7 @@
 # Agropioo — AI-Powered Smart Agriculture Platform
 
-### Alibaba Hackathon 2026 | Solo Submission
-### Built by: Sheikh Mohammad | Company: Aplinode
+### AI Hackathon Pakistan 2026 | Team Submission
+### Built by: Sheikh Mohammad Ahmed (Team Lead) & Mustafa Shahzad (Co-Creator) | Aplinode
 
 ---
 
@@ -72,7 +72,7 @@ Farmers sell at mandis (wholesale markets) without knowing real prices. A wheat 
 - **40 million+ farming households** in Pakistan
 - Average income: Rs. 150,000–300,000/year
 - Phone: Android smartphone (budget devices, intermittent connectivity)
-- Literacy: Low — need voice-like UX, local language, simple navigation
+- Literacy: Low — need simple, conversational UX, local language, simple navigation
 
 ### Secondary: Field Workers
 
@@ -89,32 +89,39 @@ Farmers sell at mandis (wholesale markets) without knowing real prices. A wheat 
 
 ### 4.1 AI Agriculture Advisor (Multi-Agent System)
 
-**The brain of Agropioo.** Not a simple chatbot — a multi-agent AI system with 5 specialist agents that collaborate to answer any farming question.
+**The brain of Agropioo.** Not a simple chatbot — a multi-agent AI system with 8 specialized agents that collaborate to answer any farming question.
 
 ```
                     Farmer asks a question
                             │
                     ┌───────▼───────┐
-                    │  Orchestrator  │
-                    │    (Router)    │
+                    │   TRIAGE      │   (routes to the right specialist)
+                    │   (Router)    │
                     └───────┬───────┘
-              ┌─────────┬───┴───┬─────────┬──────────┐
-              ▼         ▼       ▼         ▼          ▼
-          ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────────┐
-          │ Crop │ │ Soil │ │ Pest │ │Market│ │Schemes & │
-          │Agent │ │Agent │ │Agent │ │Agent │ │Policy    │
-          └──────┘ └──────┘ └──────┘ └──────┘ └──────────┘
+                            │
+            7 Specialists (direct handoffs):
+              • Crop Advisor — disease, pests, fertiliser, irrigation
+              • Weather Agent — forecasts, rain, spray windows
+              • Prices Agent — mandi rates, market trends
+              • Schemes Agent — subsidies, loans, insurance
+              • Farm Data Agent — own farms, records, history
+              • Crop Rec. Agent — what/season to plant, rotation
+              • Handoff Agent — expert escalation
+                            │
+                            ▼
+        RAG: 21 knowledge docs (Ollama nomic-embed-text, 768-dim pgvector)
+          + farm data → grounded answer (streaming, 8 languages, Urdu/Pashto RTL)
 ```
 
 **How it works:**
-- **RAG (Retrieval-Augmented Generation)**: 21 knowledge base documents (wheat, rice, cotton, maize, sugarcane, pulses, vegetables, fruits, livestock, fertilizer guides, pesticide guides, government schemes) chunked and embedded with Jina AI v3 (1024-dim vectors) in PostgreSQL with pgvector
+- **RAG (Retrieval-Augmented Generation)**: 21 knowledge base documents (wheat, rice, cotton, maize, sugarcane, pulses, vegetables, fruits, livestock, fertilizer guides, pesticide guides, government schemes) chunked and embedded locally via Ollama nomic-embed-text (768-dim vectors) in PostgreSQL with pgvector
 - **Multi-agent routing**: The orchestrator detects the question topic and delegates to the right specialist
 - **Input/Output Guardrails**: 303-line farming-only keyword filter ensures the AI never goes off-topic (English + Urdu)
 - **Conversation Memory**: Summarized conversation history for context-aware responses
 - **Streaming responses** with markdown rendering for formatted advice
 - **8-language support**: Farmer types in Urdu, gets answer in Urdu. Roman Urdu works too.
 
-**Tech**: `@openai/agents` SDK, Groq/OpenAI-compatible LLM, pgvector embeddings, streaming SSE
+**Tech**: `@openai/agents` SDK, OpenAI LLM (gpt-4o-mini), pgvector embeddings, streaming SSE
 
 ### 4.2 AI Crop Disease Detection
 
@@ -152,7 +159,7 @@ Farmer uploads photo
 
 **Know what your crop is worth — before you go to market.**
 
-- **Live prices** for 40+ crops across 200+ mandis (agricultural wholesale markets)
+- **Live prices** for 40+ crops across 151 mandis (agricultural wholesale markets)
 - **14-day price forecasts** with **SELL/HOLD recommendations**
 - **Automated scraping**: GitHub Actions cron jobs pull data from official sources:
   - amis.pk (Punjab Agriculture Information Service)
@@ -331,8 +338,8 @@ Generic weather apps say "rain tomorrow." Agropioo says "rain tomorrow — but y
 | Technology | Purpose |
 |-----------|---------|
 | @openai/agents | Multi-agent orchestration |
-| OpenAI SDK (Groq backend) | LLM inference (gpt-oss-120b) |
-| Jina AI v3 | 1024-dim embeddings for RAG |
+| OpenAI SDK | LLM inference (gpt-4o-mini) |
+| Ollama nomic-embed-text | 768-dim local embeddings for RAG |
 | TensorFlow.js | Client-side crop disease detection |
 | HuggingFace | Pre-trained disease classification model |
 
@@ -375,7 +382,7 @@ Generic weather apps say "rain tomorrow." Agropioo says "rain tomorrow — but y
 ├─────────────────────────────────────────────────────────┤
 │  WEATHER       │ weather_advisories, weather_alerts       │
 ├─────────────────────────────────────────────────────────┤
-│  PRICES        │ crops (40+), mandis (200+), mandi_      │
+│  PRICES        │ crops (40+), mandis (151), mandi_      │
 │                │ prices, price_predictions, price_alerts  │
 ├─────────────────────────────────────────────────────────┤
 │  CROPS         │ crop_soil_compatibility, rotation_      │
@@ -399,7 +406,7 @@ Generic weather apps say "rain tomorrow." Agropioo says "rain tomorrow — but y
 
 ## 8. API Architecture
 
-**~80 Route Handlers** across these groups:
+**66 Route Handlers** across these groups:
 
 ```
 /api/auth/          → signup, login, logout, verify-email, forgot-password, reset-password, me
@@ -458,7 +465,7 @@ The app includes **built-in demo modes**:
 - Dashboard is live-DB driven with demo fallbacks
 - Knowledge base is pre-seeded with 21 Pakistan-specific agricultural documents
 - Crop database pre-loaded with 40+ Pakistani crops
-- Mandi data seeded for 200+ markets
+- Mandi data seeded for 151 markets
 
 ### What Runs Today
 
@@ -479,12 +486,12 @@ The app includes **built-in demo modes**:
 │  • All in 8 Pakistani languages              │
 │                                              │
 │  16 database migrations                     │
-│  ~80 API endpoints                          │
-│  ~100+ components                           │
+│  66 API endpoints                          │
+│  85+ components                           │
 │  105+ scripts                               │
 │  21 knowledge base documents                │
 │  40+ crop profiles                          │
-│  200+ mandi listings                        │
+│  151 mandi listings                        │
 └─────────────────────────────────────────────┘
 ```
 
@@ -546,22 +553,22 @@ Every feature follows: **Constitution → Research → Specify → Clarify → B
 - Founder reviews every diff against spec
 - Acceptance criteria verified before merge
 
-### Solo Build Record
+### Build Record
 
 - **Timeline**: Mid-August to Early September 2026 (~2 weeks)
-- **Builder**: Sheikh Mohammad (solo)
+- **Builders**: Sheikh Mohammad Ahmed (Team Lead) & Mustafa Shahzad (Co-Creator)
 - **Commits**: Atomic, meaningful, imperative mood
-- **Architecture**: 16 database migrations, ~80 API routes, ~100 components, 105+ scripts
+- **Architecture**: 16 database migrations, 66 API routes, 85+ components, 105+ scripts
 - **Documentation**: 30+ spec files, 3 ADRs, full information architecture
 
 ---
 
 ## 13. The Team
 
-**Sheikh Mohammad** — Founder & Sole Builder
+**Sheikh Mohammad Ahmed** (Team Lead) & **Mustafa Shahzad** (Co-Creator)
 - Company: Aplinode
 - Built the entire platform: frontend, backend, AI, database, DevOps, design
-- 16 database migrations, ~80 API endpoints, 14 features — solo
+- 16 database migrations, 66 API endpoints, 14 features
 
 ---
 
@@ -573,7 +580,7 @@ Every feature follows: **Constitution → Research → Specify → Clarify → B
 ### Minute 2: AI Advisor Live Demo
 > "Watch: I'm a wheat farmer in Sindh. I type in Urdu: 'Mere khet mein pattiyaan peeli ho rahi hain, kya karoon?' — What should I do, my leaves are turning yellow?"
 > [Show multi-agent routing → RAG retrieval → Urdu response with specific treatment steps]
-> "The AI checked 5 specialist agents, retrieved from our knowledge base, and answered in Urdu with a 5-step treatment plan."
+> "The AI checked 8 specialized agents, retrieved from our knowledge base, and answered in Urdu with a 5-step treatment plan."
 
 ### Minute 3: Disease Detection + Weather
 > "I take a photo of my crop..." [upload photo] "...and within seconds I get: Disease detected — Leaf Rust, 87% confidence, severity HIGH. Here are 3 treatment options with costs."
@@ -584,7 +591,7 @@ Every feature follows: **Constitution → Research → Specify → Clarify → B
 > "This farmer just saved Rs. 336 per maund by not selling today."
 
 ### Minute 5: Scale & Vision
-> "This platform speaks 8 languages. It works offline. It has 40 crops, 200 mandis, 16 districts of soil data. And it was built in 2 weeks — solo. The vision: every Pakistani farmer with a smartphone has a personal AI agronomist, in their own language, for free."
+> "This platform speaks 8 languages. It works offline. It has 40+ crops, 151 mandis, 16 district soil profiles. And it was built in 2 weeks by a two-person team. The vision: every Pakistani farmer with a smartphone has a personal AI agronomist, in their own language, for free."
 
 ---
 
@@ -616,10 +623,10 @@ agropioo-hackathon/
 │   │   └── verify/        # Email verification
 │   ├── (site)/            # Marketing site
 │   │   └── [locale]/      # Localized marketing pages
-│   ├── api/               # ~80 Route Handlers
+│   ├── api/               # 66 Route Handlers
 │   ├── fonts/             # Local font files (Playfair, DM Sans, Nastaliq, etc.)
 │   └── globals.css        # Tailwind + brand tokens
-├── components/            # ~100 React components
+├── components/            # 85+ React components
 │   ├── app-control/       # Universal chat agent
 │   ├── auth/              # Auth forms
 │   ├── offline/           # PWA providers
@@ -656,18 +663,18 @@ agropioo-hackathon/
 | Metric | Value |
 |--------|-------|
 | Database migrations | 16 |
-| API route handlers | ~80 |
-| React components | ~100+ |
+| API route handlers | 66 |
+| React components | 85+ |
 | Utility scripts | 105+ |
 | Knowledge base documents | 21 |
 | Supported crops | 40+ |
-| Tracked mandis | 200+ |
+| Tracked mandis | 151 |
 | District soil profiles | 16 |
 | Supported languages | 8 |
 | Feature specs | 30+ |
 | ADRs | 3+ |
-| Build time | ~2 weeks |
-| Team size | 1 (solo) |
+| Build time | 2+ weeks |
+| Team size | 2 (Team Lead + Co-Creator) |
 
 ---
 

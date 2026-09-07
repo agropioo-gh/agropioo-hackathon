@@ -6,6 +6,9 @@
 **Category:** Smart Agriculture  
 **Initial Market:** Pakistan  
 
+**Built by:** Sheikh Mohammad Ahmed (Team Lead) & Mustafa Shahzad (Co-Creator) · Aplinode  
+**Hackathon:** AI Hackathon Pakistan 2026  
+
 Agropioo is an AI-powered smart agriculture platform designed initially for Pakistan to help farmers make informed decisions throughout the complete crop lifecycle. It combines a multi-agent AI Agriculture Advisor, digital farm records, weather-aware recommendations, crop disease detection, mandi price tracking, crop recommendations, pest outbreak predictions, profit/loss tracking, and full local-language accessibility.
 
 The long-term vision is to scale globally by adapting the platform to local crops, climates, agricultural practices, and languages.
@@ -330,7 +333,7 @@ Agropioo stores all farm data for future recommendations and tracking, improving
 
 **Key components:**
 
-- 65+ API route handlers across 14 domains
+- 66 API route handlers across 14 domains
 - 85+ React components
 - 100+ library modules
 - 16 database migrations (pgvector for RAG)

@@ -1,328 +1,233 @@
-# Agropioo — Hackathon-Winning Feature Plan
+# Agropioo — Built Feature Overview
 
-> **Project Type:** Software-Only (No IoT, No Hardware)
-> **Approach:** API-driven, AI/ML-powered, Satellite imagery via APIs, Voice & NLP services
+> **Project type:** Software-Only (no IoT, no hardware)
+> **Approach:** API-driven, AI/ML-powered, full-stack Next.js — Route Handlers only, no separate backend.
+> **Builders:** Sheikh Mohammad Ahmed (Team Lead), Mustafa Shahzad (Co-Creator) · Company: Aplinode
+> **Hackathon:** AI Hackathon Pakistan 2026 · **Duration:** ~2 weeks
 
----
-
-## Feature Roadmap Overview
-
-| Tier | Purpose | Features |
-|------|---------|----------|
-| **Tier 1 — Must-Have** | Judges expect these as baseline | #1, #2, #3, #4 |
-| **Tier 2 — Differentiators** | These make you stand out from competitors | #5, #6, #7 |
-| **Tier 3 — Wow Factor** | These win hackathons | #8, #9, #10, #11 |
+This document lists **only the features built in this project**. Features considered
+but deferred (carbon-credit tracking, voice-only UI) are
+listed at the end as out-of-scope and are **not** implemented.
 
 ---
 
-## Tier 1: Must-Have Features (Baseline)
+## Feature Matrix
+
+| # | Feature | Tier | Core tech | Status |
+|---|---------|------|-----------|--------|
+| 1 | AI Crop Disease Detection | Must-have | TensorFlow.js + HuggingFace (38 classes) + Cloudinary | Built |
+| 2 | Smart Weather Advisory | Must-have | OpenWeather + growth-stage-aware AI rules | Built |
+| 3 | Mandi Price Tracker & Predictor | Must-have | 5 gov scrapers + 14-day forecast + SELL/HOLD | Built |
+| 4 | AI Multi-Agent Chatbot (regional languages) | Differentiator | @openai/agents (8 agents) + RAG (Ollama 768-dim) | Built |
+| 5 | Crop Recommendation Engine | Differentiator | Multi-factor scoring over 40+ crops | Built |
+| 6 | Farm Profit/Loss Calculator | Differentiator | Season/expense/break-even/ROI | Built |
+| 7 | AI Pest Outbreak Prediction | Differentiator | Cron risk scores, growth-stage aware | Built |
+| 8 | Digital Farm Records | Must-have | Leaflet map + GPS + 7 record types | Built |
+| 9 | App-Control Chat Agent | Differentiator | 12-tool floating agent, streaming | Built |
+| 10 | Offline-First PWA | Wow factor | Serwist + IndexedDB + drain-on-reconnect | Built |
+| 11 | 8-Language i18n + RTL | Must-have | DB-stored translations, RTL for Urdu/Pashto | Built |
 
 ---
 
-### Feature #1: AI Crop Disease Detection
+## Feature 1 — AI Crop Disease Detection
 
-**Problem:** Farmers lose 20-40% of crops annually due to undetected or misdiagnosed diseases.
+**Problem:** Farmers lose 20–40% of crops annually to undetected or misdiagnosed disease.
 
-**Solution:** Farmer uploads a photo of an affected leaf/plant → AI model analyzes the image → returns disease name, severity level, and recommended treatment (pesticide/organic remedy).
+**Solution:** Farmer uploads a photo of an affected leaf/plant → model classifies the
+disease → returns disease name, severity (Watch / Treat Now / Clear), and a localized
+treatment plan.
 
-**How It Works (No Hardware):**
-- User captures or uploads a leaf image via mobile/web camera
-- Image is sent to a trained CNN (Convolutional Neural Network) model
-- Model classifies the disease from a dataset of 38+ crop diseases (PlantVillage dataset)
-- Returns diagnosis with confidence score + treatment recommendations
+**How it works (no hardware):**
+- Client compresses the image to 1024px (80% JPEG) before upload.
+- Server resizes to 384×384 (`sharp`) before sending to the HuggingFace Inference API
+  (`animeshakr/plant-disease-efficientnetv2s`, 38 disease classes).
+- Confidence threshold 0.5: below it shows "Could not identify — try a clearer photo."
+- Diagnosis images stored on **Cloudinary** (no S3/Firebase).
+- Every scan is saved to `detect_scans`; "Save to farm" also writes to the `records` table.
+- Follow-up chat per scan; full history with pagination.
+- Works offline: photos queue in IndexedDB and process when online.
 
-**APIs / Tech Stack:**
-- TensorFlow.js or PyTorch (model training & inference)
-- PlantVillage Dataset (38 disease classes across 14 crop species)
-- Cloud storage for uploaded images (AWS S3 / Firebase Storage)
-
-**Impact Metric:** Can reduce crop loss by up to 30% through early detection.
-
----
-
-### Feature #2: Satellite Field Monitoring
-
-**Problem:** Farmers cannot physically inspect large fields daily and lack visibility into crop health variations across their land.
-
-**Solution:** Farmer selects their field boundary on a map → system fetches latest satellite imagery → calculates NDVI (Normalized Difference Vegetation Index) → displays color-coded health zones on the field.
-
-**How It Works (No Hardware):**
-- Farmer marks field polygon on an interactive map
-- System queries satellite API for latest imagery of that geo-fence
-- NDVI is computed from red and near-infrared bands
-- Results rendered as a heatmap overlay on the map
-- Historical comparison shows crop growth trends over time
-
-**APIs / Tech Stack:**
-- **Sentinel Hub API** (free Sentinel-2 satellite data, 10m resolution)
-- **Google Earth Engine API** (alternative, powerful analysis)
-- Mapbox GL JS or Leaflet.js (map rendering)
-- GeoJSON for field boundary storage
-
-**Impact Metric:** Enables precision agriculture for farms of any size without drone costs.
+**Impact:** Early detection can cut crop loss by up to 30%.
+**Out of scope:** Voice diagnosis, video feed, batch upload, push notifications.
 
 ---
 
-### Feature #3: Smart Weather Advisory
+## Feature 2 — Smart Weather Advisory
 
-**Problem:** Generic weather forecasts don't translate into actionable farming decisions.
+**Problem:** Generic forecasts don't become actionable decisions.
 
-**Solution:** System combines hyperlocal weather data + farmer's crop type + current crop growth stage → generates daily personalized farming advice (e.g., "Delay irrigation today — heavy rain expected at 3 PM" or "Apply fungicide — high humidity + temperature favors blight").
+**Solution:** OpenWeather 5-day / 3-hour forecast + the farm's crop, growth stage, and
+soil → farm-specific advisories with alerts for frost, rain, and heat.
 
-**How It Works (No Hardware):**
-- Farmer registers their crop, sowing date, and location
-- System fetches 7-day forecast from weather API
-- Crop growth stage is calculated from sowing date
-- Rule engine + ML model generates advisory based on weather + crop stage combinations
-- Push notifications sent for critical weather events
+**How it works (no hardware):**
+- OpenWeather `forecast` endpoint (lat/lon based).
+- Growth stage computed from sowing date.
+- Advisory generation via cron; per-farm alert centre with acknowledge flow.
+- Example: "Your wheat is at tillering stage — delay irrigation 2 days if frost expected."
 
-**APIs / Tech Stack:**
-- **OpenWeatherMap API** or **Visual Crossing Weather API**
-- **Pakistan Meteorological Department (IMD) API** (for Pakistan-specific data)
-- Firebase Cloud Messaging (push notifications)
-- Cron jobs for daily advisory generation
-
-**Impact Metric:** Can save 30-40% water by avoiding unnecessary irrigation before rain.
+**Impact:** Avoids unnecessary irrigation before rain — saves water and input costs.
 
 ---
 
-### Feature #4: Mandi Price Tracker & Predictor
+## Feature 3 — Mandi Price Tracker & Predictor
 
-**Problem:** Farmers sell crops at low prices due to lack of market intelligence and price volatility.
+**Problem:** Farmers sell at low prices because they can't track markets or predict trends.
 
-**Solution:** Real-time mandi prices displayed for nearby markets + ML model predicts price trends for next 7-14 days → alerts farmer when to sell for maximum profit.
+**Solution:** Live prices across 5 government sources + 14-day statistical forecast with
+SELL/HOLD signals and price alerts.
 
-**How It Works (No Hardware):**
-- System scrapes/fetches daily mandi prices from government APIs
-- Prices displayed on dashboard with market-wise comparison
-- LSTM or Facebook Prophet model trained on historical price data
-- Price trend shown as chart with buy/sell/hold recommendation
-- Email/app alerts when price crosses farmer's target threshold
+**Data sources (5):**
+| Source | Coverage |
+|---|---|
+| AMIS (amis.pk) | National commodity prices |
+| SAMIS (samis.pk) | Sindh prices |
+| FMIS KP (fmis.kp.gov.pk) | Khyber Pakhtunkhwa |
+| BMIS | Balochistan prices |
+| PBS-SPI | Consumer price index |
 
-**APIs / Tech Stack:**
-- **Agmarknet API** (Pakistani government mandi prices)
-- **Data.gov.in** open data portal
-- LSTM / Prophet / XGBoost (price prediction models)
-- Chart.js or Recharts (price visualization)
-- Email API (price alerts)
+**Capabilities:** price history charts, 14-day predictions, SELL/HOLD signals, market
+comparison, global mandi search, crop favourites, price alerts, daily ingestion via cron.
 
-**Impact Metric:** Farmers can earn 15-25% more by selling at the right time.
+**Coverage:** 151 mandis (one per district).
 
----
-
-## Tier 2: Winning Differentiators
+**Impact:** Farmers earn 15–25% more by selling at the right time.
 
 ---
 
-### Feature #5: AI Chatbot in Regional Languages (Voice + Text)
+## Feature 4 — AI Multi-Agent Chatbot (Regional Languages, Text)
 
-**Problem:** Most farmers are not tech-savvy and prefer speaking in their native language over typing in English.
+**Problem:** Farmers need answers in their own language, fast.
 
-**Solution:** A conversational AI chatbot that understands Hindi, Urdu, Punjabi, Tamil, Marathi (etc.) via both voice and text input → answers farming questions in the farmer's preferred language.
+**Solution:** A text-chat AI advisor with 8 specialized agents that collaborate to answer
+any farming question in 8 languages.
 
-**How It Works (No Hardware):**
-- Farmer taps mic and speaks in their language
-- Speech-to-text converts voice to text (supports multiple Pakistani languages)
-- NLP model understands the query intent (crop disease, weather, price, scheme, etc.)
-- Response generated from knowledge base + real-time data
-- Text-to-speech reads the response aloud in the same language
+**Architecture (8 agents, @openai/agents):**
+| Agent | Handles |
+|---|---|
+| Triage | Routes each query to the right specialist |
+| Crop Advisor | Diseases, pests, fertilizer, irrigation, crop/livestock management |
+| Weather Agent | Forecasts, rain, spray windows |
+| Prices Agent | Mandi rates, timing, market trends |
+| Schemes Agent | Government subsidies, loans, insurance |
+| Farm Data Agent | The farmer's own farms, records, history |
+| Crop Recommendation Agent | What/season to plant, rotation |
+| Handoff Agent | Complex or expert-escalation cases |
 
-**APIs / Tech Stack:**
-- **Google Speech-to-Text API** or **Whisper AI** (multilingual transcription)
-- **Google Text-to-Speech API** or **ElevenLabs** (natural voice output)
-- **OpenAI API** or **Google Gemini API** (conversational AI backbone)
-- Custom RAG (Retrieval-Augmented Generation) with farming knowledge base
-- LangChain for prompt orchestration
+**RAG:** pgvector similarity search over 21 Pakistan-specific knowledge documents.
+Embeddings are generated **locally via Ollama** (`nomic-embed-text`, 768-dim) — no paid
+embedding API key required.
 
-**Impact Metric:** Makes Agropioo accessible to 90%+ of Pakistani farmers who prefer regional languages.
+**Other capabilities:** conversation memory with summaries, streaming responses (SSE),
+input/output guardrails (farming-only), full RTL support for Urdu and Pashto.
 
----
+**LLM:** OpenAI-compatible API via the `openai` package, model from `ADVISOR_MODEL`
+(default `gpt-4o-mini`).
 
-### Feature #6: Crop Recommendation Engine
-
-**Problem:** Farmers often plant the same crop every year without considering market demand, soil depletion, or climate shifts — leading to low profits and soil degradation.
-
-**Solution:** Based on soil health data, current weather patterns, market demand forecasts, and historical yields → AI recommends the most profitable crop to plant this season with reasoning.
-
-**How It Works (No Hardware):**
-- Farmer inputs: location, soil type, irrigation availability, budget
-- System fetches: soil health card data (API), weather forecast, market price trends
-- ML model scores crops on profitability, risk, and sustainability
-- Top 3 recommended crops shown with expected revenue comparison charts
-- Includes crop rotation suggestions for long-term soil health
-
-**APIs / Tech Stack:**
-- **Soil Health Card API** (Government of Pakistan)
-- Weather APIs (same as Feature #3)
-- Market price data (same as Feature #4)
-- Scikit-learn / XGBoost (recommendation model)
-- Crop dataset from ICAR (Pakistani Council of Agricultural Research)
-
-**Impact Metric:** Can increase farmer income by 20-40% through better crop selection.
+> **Note:** Voice input/output is **out of scope** per the project constitution. The
+> advisor is text-chat only until separately specced.
 
 ---
 
-### Feature #7: Farm Profit/Loss Calculator & Forecast
+## Feature 5 — Crop Recommendation Engine
 
-**Problem:** Farmers lack financial planning tools and often realize losses only after harvest.
+**Problem:** Farmers plant the same crop every year, ignoring soil, market, and climate.
 
-**Solution:** Farmer inputs crop type, area, and investment details → system calculates expected cost of cultivation, yield, revenue, and profit/loss → provides real-time tracking as the season progresses.
+**Solution:** Multi-factor scoring ranks crops by profitability for the farmer's context.
 
-**How It Works (No Hardware):**
-- Pre-built cost models for major crops (seed, fertilizer, labor, irrigation, transport)
-- Farmer enters actual expenses as they occur
-- System compares actual vs. projected costs
-- At harvest: connects with mandi price data to forecast revenue
-- Dashboard shows P&L statement, break-even analysis, and ROI
+**How it works:**
+- Inputs: soil type, season, budget, irrigation availability, weather, market prices.
+- 5-dimension scoring (0–100): Soil(25) + Season(25) + Budget(20) + Irrigation(15) +
+  Market/Weather(15).
+- 40+ Pakistani crops with yield/duration/capital data; 16 district soil profiles;
+  crop-rotation rules.
+- Top recommendations shown with comparison charts; can be saved and revisited.
 
-**APIs / Tech Stack:**
-- Crop cost database (CACP — Commission for Agricultural Costs & Prices)
-- Mandi price API (same as Feature #4)
-- Chart.js / Recharts (financial visualizations)
-- Export to PDF for bank loan applications
-
-**Impact Metric:** Gives farmers financial literacy and planning capability for the first time.
+**Impact:** 20–40% income increase through better crop selection.
 
 ---
 
-### Feature #8: Carbon Footprint Tracker & Carbon Credit Estimator
+## Feature 6 — Farm Profit/Loss Calculator
 
-**Problem:** Farmers have no way to measure or monetize their sustainable farming practices.
+**Problem:** Farmers realize losses only after harvest; no financial planning tools.
 
-**Solution:** Tracks farm-level carbon emissions and sequestration → estimates carbon credits earned → connects farmers with carbon credit markets for additional income.
+**Solution:** Create seasons, log expenses, and track projected vs. actual cost,
+break-even, and ROI.
 
-**How It Works (No Hardware):**
-- System calculates carbon footprint based on farm inputs (fertilizer, fuel, irrigation)
-- Carbon sequestration estimated from crop type, soil health, and farming practices
-- ML model generates carbon credit estimates
-- Dashboard shows environmental impact and potential earnings
-- Connects with carbon credit marketplaces
+- Expense CRUD (categories, amounts, dates); projected costs; break-even bar chart;
+  ROI per season and across years; charts for expense breakdown and time series.
 
-**APIs / Tech Stack:**
-- IPCC emission factors database
-- FAO EX-ACT (Carbon Accounting Tool)
-- Soil carbon measurement APIs
-- Blockchain for credit verification (optional)
-
-**Impact Metric:** Can generate additional PKR5,000-PKR15,000 per acre in carbon credit income.
+**Impact:** First financial-planning tool for smallholders; digital records also enable
+bank-loan eligibility.
 
 ---
 
-## Tier 3: Wow Factor Features
+## Feature 7 — AI Pest Outbreak Prediction
+
+**Problem:** Pest attacks destroy harvests overnight; farmers react too late.
+
+**Solution:** Daily risk scores (0–100) per farm, combining weather, crop stage, and
+historical incidence, with escalation-aware alerts.
+
+- Cron-generated daily scores; growth-stage-aware; forecast charts; alert notifications
+  (warning / critical); history tracking; growth-stage editor.
+
+**Impact:** Early warning can prevent PKR 15,000–50,000/acre in pest damage.
 
 ---
 
-### Feature #9: AI Pest Outbreak Prediction
+## Feature 8 — Digital Farm Records
 
-**Problem:** Pest attacks destroy entire harvests overnight because farmers react too late.
-
-**Solution:** Using real-time weather data + historical pest incidence data + crop stage → ML model predicts probability of pest attack in the next 7 days for the farmer's specific area → sends early warning alerts with preventive measures.
-
-**How It Works (No Hardware):**
-- Weather conditions (humidity, temperature, rainfall) are strong pest indicators
-- Historical pest outbreak data collected from state agriculture departments
-- Crop growth stage determines vulnerability window
-- Ensemble ML model (Random Forest + Gradient Boosting) outputs risk probability
-- Alert sent when risk crosses 70% threshold
-
-**APIs / Tech Stack:**
-- Weather APIs (same as Feature #3)
-- State Agriculture Department pest incidence data
-- Scikit-learn / XGBoost (prediction model)
-- Firebase Cloud Messaging (alert delivery)
-
-**Impact Metric:** Early warning can prevent PKR15,000-PKR50,000 per acre in pest damage.
+- Farm creation with Leaflet interactive boundary drawing.
+- GPS coordinate capture + Photon geocoding.
+- Farm health score (computed from records, weather, growth stage).
+- 7 record types: Sowing, Planting, Irrigation, Fertiliser, Pesticide, Disease,
+  Harvest — plus expenses, growth stages, and other activities.
+- Records are farm-specific, searchable, and feed the AI advisor as context.
 
 ---
 
-### Feature #10: Voice-Enabled UI by Voice Agents
+## Feature 9 — App-Control Chat Agent
 
-**Problem:** Even with a smartphone app, many farmers find it difficult to navigate complex UIs while working in the field — dirty hands, poor eyesight, or low literacy make tapping and reading a barrier.
-
-**Solution:** The entire Agropioo app is voice-controlled. A voice agent understands natural speech in regional languages and performs any action hands-free — from checking weather to logging expenses to asking crop advice. The farmer just speaks; the agent does everything.
-
-**How It Works (No Hardware):**
-- Farmer opens the app and speaks naturally: "What's today's weather advice for my wheat crop?"
-- Voice agent (powered by multimodal AI) understands intent, context, and the farmer's profile
-- Agent performs the action end-to-end: fetches data, generates advice, and speaks the answer
-- Complex multi-step tasks work too: "Log my irrigation expense of 2000 rupees and add a photo of the field"
-- Agent uses on-device processing where possible for low bandwidth and privacy
-- Works entirely within the app — no phone call or separate IVR needed
-
-**APIs / Tech Stack:**
-- **Whisper AI** (open-source, run locally or via free API tier for multilingual speech-to-text)
-- **Coqui TTS** or **Web Speech API** (browser-native, free text-to-speech in regional languages)
-- **Local LLM** (e.g., Llama 3 via Ollama) or **Gemini free tier** (voice agent with function calling)
-- Web Speech API (browser-native, lightweight fallback for STT/TTS)
-- RAG system for farming knowledge + real-time API integration
-
-**Impact Metric:** Makes Agropioo fully accessible to farmers with low literacy — no reading or tapping required, just speak and listen.
+- Floating chat on every page of the farmer app.
+- 12 tools: create/update/delete records, navigate, weather/prices/P&L summaries,
+  handoff to advisor, attachments, confirmations.
+- Page-aware context; streaming responses.
 
 ---
 
+## Feature 10 — Offline-First PWA
 
-
-### Feature #11: Offline-First PWA + Email Alerts
-
-**Problem:** Rural areas have poor or no internet connectivity — apps that require constant internet are useless in the field.
-
-**Solution:** Agropioo works as a Progressive Web App (PWA) that functions offline, syncs data when internet is available, and sends critical alerts via Email when the farmer is offline.
-
-**How It Works (No Hardware):**
-- App built as PWA with service workers for offline caching
-- All advisory, crop guides, and scheme info cached locally
-- Farmer can record observations, take photos, and calculate P&L offline
-- When internet returns, data auto-syncs to server
-- Critical alerts (weather warnings, pest outbreaks, price spikes) sent via Email
-
-**APIs / Tech Stack:**
-- **Next.js / React** with PWA plugin (service workers, manifest)
-- **Workbox** (offline caching strategy)
-- **IndexedDB** (local data storage)
-- **Email API** (alerts when offline)
-- Background sync API for data upload
-
-**Impact Metric:** Increases app usability from ~40% to ~95% in rural Pakistan where 4G coverage is spotty.
+- Serwist service worker for offline caching (replaces Workbox; no separate PWA lib).
+- IndexedDB write queue for offline data entry; drain-on-reconnect.
+- Client UUIDs for idempotency; offline install prompt (Android/iOS).
 
 ---
 
-## Summary: Complete Feature Matrix
+## Feature 11 — 8-Language i18n + RTL
 
-| # | Feature | Tech Type | APIs Used | Priority |
-|---|---------|-----------|-----------|----------|
-| 1 | AI Crop Disease Detection | ML / Computer Vision | TensorFlow, PlantVillage | 🔴 Must-Have |
-| 2 | Satellite Field Monitoring | GIS / Remote Sensing | Sentinel Hub, Google Earth Engine | 🔴 Must-Have |
-| 3 | Smart Weather Advisory | Weather API + Rules Engine | OpenWeatherMap, IMD | 🔴 Must-Have |
-| 4 | Mandi Price Tracker & Predictor | ML / Time Series | Agmarknet, Data.gov.in | 🔴 Must-Have |
-| 5 | Regional Language Voice Chatbot | NLP / Speech | Whisper, Google TTS, Gemini | 🟡 Differentiator |
-| 6 | Crop Recommendation Engine | ML / Analytics | Soil Health Card, ICAR | 🟡 Differentiator |
-| 7 | Farm Profit/Loss Calculator | Finance / Analytics | CACP, Mandi API | 🟡 Differentiator |
-| 8 | Carbon Footprint Tracker & Carbon Credit Estimator | Sustainability / Blockchain | IPCC, FAO EX-ACT | 🟢 Wow Factor |
-| 9 | AI Pest Outbreak Prediction | ML / Predictive | Weather + Pest Data APIs | 🟢 Wow Factor |
-| 10 | Voice-Enabled UI by Voice Agents | Voice AI / NLP | Whisper, Coqui TTS, Ollama | 🟢 Wow Factor |
-| 11 | Offline-First PWA + Email Alerts | PWA / Email | Email API, Workbox | 🟢 Wow Factor |
+- Translations stored in the Neon `translations` table (admin-editable, not hardcoded).
+- URL-based locale routing (`/[locale]/`).
+- Visible language switcher in the nav everywhere (marketing, signup, login, farmer app).
+- Language chosen during signup carries into onboarding.
+- RTL mirroring + Nastaliq typography for Urdu and Pashto.
+- Catalog/translation sync via `scripts/sync-translations.mts` for all 8 locales:
+  `en`, `ur`, `pa`, `ps`, `sd`, `skr`, `bal`, `hno`.
 
 ---
 
-## Hackathon Demo Strategy
+## Demo Flow (built features only)
 
-**Pick 5-6 features for a polished demo:**
+> "Meet Ali, a wheat farmer in Punjab. He opens Agropioo on his phone..."
 
-1. **AI Crop Disease Detection** — Visual wow factor (upload photo → instant result)
-2. **Satellite Field Monitoring** — Shows technical depth (real satellite imagery)
-3. **Mandi Price Predictor** — Solves a REAL farmer pain point
-4. **Regional Language Voice Bot** — Accessibility wins judge hearts
-5. **Offline-First + Email Alerts** — Shows practical, real-world thinking
-
-**Demo Flow:**
-> *"Meet Ramesh, a farmer in Punjab. He opens Agropioo on his phone..."*
-> 1. Ramesh checks today's weather advisory → gets personalized tips for his wheat crop
-> 2. He uploads a diseased leaf photo → AI detects "Yellow Rust" in 2 seconds → shows treatment
-> 3. He checks mandi prices → AI predicts prices will rise 12% next week → "Hold your stock"
-> 4. He asks the voice bot in Punjabi → "My crop has white spots, what should I do?" → gets instant answer
-> 5. He discovers he's eligible for PM-KISAN PKR6,000/year subsidy → applies in one click
-> 6. Demo ends with impact: "Agropioo can serve 14 crore Pakistani farmers and save them PKRX per season"
+1. Picks Urdu at signup → onboards in Urdu → adds farm by drawing it on the map.
+2. Dashboard shows "What to do today": irrigate now; wheat at tillering stage.
+3. Asks the advisor in Urdu: "My wheat leaves have yellow spots" → routed to the
+   Crop Advisor agent, which checks his farm history and returns grounded advice.
+4. Spots a diseased leaf → uploads a photo → AI detects the disease, shows severity
+   and treatment → saves it to the farm record.
+5. Checks mandi prices → 14-day forecast shows prices rising → SELL/HOLD: "Hold".
+6. Receives a frost alert for tomorrow → acknowledges it.
+7. Later, switches to offline mode on a poor network → logs an irrigation event; it
+   syncs when he's back online.
 
 ---
-
-*Generated for Agropioo — Empowering Farmers Through Software*
