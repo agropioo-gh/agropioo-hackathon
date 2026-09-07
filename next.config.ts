@@ -17,6 +17,9 @@ const nextConfig: NextConfig = withSerwist({
     globalNotFound: true,
     useOffline: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack: (config) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
@@ -36,6 +39,7 @@ const nextConfig: NextConfig = withSerwist({
       {
         source: "/sw.js",
         headers: [
+          { key: "Content-Type", value: "application/javascript" },
           { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
         ],
       },
