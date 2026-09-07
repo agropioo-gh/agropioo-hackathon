@@ -92,6 +92,8 @@ describe('createRecordSchema', () => {
       season: 'Autumn',
       year: '2024-25',
       event_date: '2024-06-15',
+      title: 'Test',
+      note: 'Test',
     });
     expect(result.success).toBe(false);
   });
@@ -103,6 +105,58 @@ describe('createRecordSchema', () => {
       season: 'Summer',
       year: '2024-25',
       event_date: '2024-06-15',
+      title: 'Test',
+      note: 'Test',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects missing title', () => {
+    const result = createRecordSchema.safeParse({
+      farm_id: '00000000-0000-0000-0000-000000000000',
+      type: 'irrigation',
+      season: 'Summer',
+      year: '2024-25',
+      event_date: '2024-06-15',
+      note: 'Full field',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects missing note', () => {
+    const result = createRecordSchema.safeParse({
+      farm_id: '00000000-0000-0000-0000-000000000000',
+      type: 'irrigation',
+      season: 'Summer',
+      year: '2024-25',
+      event_date: '2024-06-15',
+      title: 'Canal turn',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects empty title', () => {
+    const result = createRecordSchema.safeParse({
+      farm_id: '00000000-0000-0000-0000-000000000000',
+      type: 'irrigation',
+      season: 'Summer',
+      year: '2024-25',
+      event_date: '2024-06-15',
+      title: '',
+      note: 'Full field',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects empty note', () => {
+    const result = createRecordSchema.safeParse({
+      farm_id: '00000000-0000-0000-0000-000000000000',
+      type: 'irrigation',
+      season: 'Summer',
+      year: '2024-25',
+      event_date: '2024-06-15',
+      title: 'Canal turn',
+      note: '',
     });
     expect(result.success).toBe(false);
   });
