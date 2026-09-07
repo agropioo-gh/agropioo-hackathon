@@ -9,6 +9,7 @@ import { createFarmSchema, type CreateFarmInput } from "@/lib/validation/farms";
 import { PAKISTAN_DISTRICTS } from "@/lib/farms/districts";
 import { CROPS, IRRIGATION_METHODS, SOIL_TYPES, type Crop, type IrrigationMethod, type SoilType } from "@/lib/farms/constants";
 import { photonReverse, photonSearch } from "@/lib/maps/photon";
+import { generateClientUuid, queueWrite } from "@/lib/offline/queue-helpers";
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -155,6 +156,24 @@ const DISTRICT_SUGGESTIONS: Record<string, string[]> = {
   Islamabad: ["F-6", "F-7", "G-11", "Tarlai", "Bhara Kahu", "Chak Shahzad", "Rawat"],
   Bahawalpur: ["Milad Chowk", "Model Town", "Bahawalpur Road", "Satellite Town", "Hasilpur Road", "Yazman Road", "Chishtian Road", "Ahmadpur East"],
 };
+
+function normalizeDistrictName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/\b(district|dist\.|division|tehsil|taluka|city)\b/g, " ")
+    .replace(/[^a-z\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function matchDistrict(candidate: string | undefined): string | undefined {
+  if (!candidate) return undefined;
+  const normalized = normalizeDistrictName(candidate);
+  if (!normalized) return undefined;
+  return PAKISTAN_DISTRICTS.find(
+    (d) => normalizeDistrictName(d) === normalized
+  );
+}
 
 function CustomSelect({
   value,
@@ -376,7 +395,6 @@ const LocationSearch = forwardRef<{ skipAutoGeocode: () => void }, {
     if (autoGeocodeRef.current) clearTimeout(autoGeocodeRef.current);
     if (query.length < 3 || open) return;
     if (skipAutoGeocodeRef.current) {
-      skipAutoGeocodeRef.current = false;
       return;
     }
 
@@ -442,6 +460,7 @@ const LocationSearch = forwardRef<{ skipAutoGeocode: () => void }, {
           id="farm-location"
           value={query}
           onChange={(e) => {
+            skipAutoGeocodeRef.current = false;
             setQuery(e.target.value);
             onChange(e.target.value);
           }}
@@ -690,6 +709,7 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
   const [serverErrors, setServerErrors] = useState<Record<string, string>>(
     {}
   );
+  const [queuedMessage, setQueuedMessage] = useState<string | null>(null);
   const [marker, setMarker] = useState<{ lat: number; lng: number }>({
     lat: 30.3753,
     lng: 69.3451,
@@ -698,6 +718,8 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
   const [isGeocoding, setIsGeocoding] = useState<boolean>(false);
   const [districtSuggestions, setDistrictSuggestions] = useState<string[]>([]);
   const locationSearchRef = useRef<{ skipAutoGeocode: () => void }>(null);
+  const skipLocationResetRef = useRef(false);
+  const clientUuidRef = useRef(generateClientUuid());
 
   const {
     register,
@@ -753,7 +775,19 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
 
           const fullName = result.display_name || placeName;
           setSelectedLocationName(fullName);
-          setValue("location", placeName);
+          setValue("location", fullName);
+
+          const matchedDistrict = matchDistrict(
+            addr.district ||
+              addr.county ||
+              addr.municipality ||
+              addr.city ||
+              addr.town
+          );
+          if (matchedDistrict && matchedDistrict !== selectedDistrict) {
+            skipLocationResetRef.current = true;
+            setValue("district", matchedDistrict);
+          }
         }
       }
     } catch (err) {
@@ -804,6 +838,10 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
   }, [selectedDistrict]);
 
   useEffect(() => {
+    if (skipLocationResetRef.current) {
+      skipLocationResetRef.current = false;
+      return;
+    }
     setValue("location", "");
     setSelectedLocationName("");
   }, [selectedDistrict, setValue]);
@@ -811,6 +849,7 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
   const onSubmit = async (data: CreateFarmInput) => {
     setStatus("loading");
     setServerErrors({});
+    setQueuedMessage(null);
     try {
       const res = await fetch("/api/farms", {
         method: "POST",
@@ -821,6 +860,7 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
           sowing_date: sowing || null,
           soil_type: soil || null,
           irrigation_method: irrigation,
+          client_uuid: clientUuidRef.current,
         }),
       });
       if (!res.ok) {
@@ -842,8 +882,20 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
       setStatus("saved");
       setTimeout(() => router.push(`/farms/${farm.id}`), 600);
     } catch {
-      setServerErrors({ form: "Network error" });
-      setStatus("error");
+      await queueWrite(
+        "/api/farms",
+        "POST",
+        {
+          ...data,
+          primary_crop: primaryCrop,
+          sowing_date: sowing || null,
+          soil_type: soil || null,
+          irrigation_method: irrigation,
+          client_uuid: clientUuidRef.current,
+        },
+      );
+      setQueuedMessage("Saved offline — will sync when you are back online.");
+      setStatus("saved");
     }
   };
 
@@ -1026,7 +1078,7 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
             type="date"
             value={sowing}
             onChange={(e) => setSowing(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-agro-sprout bg-white px-3 py-2.5 text-sm text-agro-ink outline-none focus:border-agro-canopy focus:ring-2 focus:ring-agro-canopy/20"
+            className="focus-ring-none mt-2 h-12 w-full rounded-xl border border-agro-sprout bg-white px-4 text-sm text-agro-ink transition-colors duration-200 focus:outline-none focus:ring-2 focus:border-agro-canopy focus:ring-agro-canopy/20"
           />
         </div>
 
@@ -1096,6 +1148,11 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
       {(serverErrors.form || status === "error") && (
         <p className="text-center text-sm font-medium text-agro-forest">
           {serverErrors.form}
+        </p>
+      )}
+      {queuedMessage && (
+        <p className="text-center text-sm font-medium text-agro-forest">
+          {queuedMessage}
         </p>
       )}
     </form>

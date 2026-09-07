@@ -19,6 +19,8 @@ import type { DetectBundle } from "@/app/(farmer)/(dashboard)/detect/detect-bund
 import type { WeatherBundle } from "@/app/(farmer)/(dashboard)/weather/weather-bundle";
 import type { PricesBundle } from "@/app/(farmer)/(dashboard)/prices/prices-bundle";
 import type { CropsBundle } from "@/app/(farmer)/(dashboard)/crops/crops-bundle";
+import type { AppControlBundle } from "@/components/app-control/app-control-bundle";
+import type { PestBundle } from "@/components/pest/pest-bundle";
 
 export interface Translator {
   (key: CatalogKey, params?: Readonly<Record<string, string | number>>): ResolvedString;
@@ -161,6 +163,7 @@ export async function getShellBundle() {
       weather: t("app.shell.nav.weather").text,
       notifications: t("app.shell.nav.notifications").text,
       settings: t("app.shell.nav.settings").text,
+      pest: t("app.shell.nav.pest").text,
       more: t("app.shell.nav.more").text,
     },
     signOut: t("app.shell.signOut").text,
@@ -230,6 +233,10 @@ export async function getDashboardBundle(): Promise<DashboardBundle> {
     signOut: t("app.shell.signOut").text,
     weatherNoLocation: t("app.dashboard.weatherNoLocation").text,
     weatherYourArea: t("app.dashboard.weatherYourArea").text,
+    pestWidgetTitle: t("app.pest.widget.title").text,
+    pestWidgetAllClear: t("app.pest.widget.allClear").text,
+    pestWidgetHighestRisk: t("app.pest.widget.highestRisk").text,
+    pestWidgetMonitoring: t("app.pest.monitoring").text,
     demo: {
       todayLabel: t("app.dashboard.demo.todayLabel").text,
       location: t("app.dashboard.demo.location").text,
@@ -931,6 +938,205 @@ export async function getCropsBundle(): Promise<CropsBundle> {
   };
 }
 
+/**
+ * Flat translation bundle for the pest prediction feature.
+ * Built server-side and passed as props to client components.
+ */
+export async function getPestBundle(): Promise<PestBundle> {
+  const locale = await getAppLocale();
+  const dict = await getDictionary(locale);
+  const t = dict.t;
+  return {
+    eyebrow: t("app.pest.eyebrow").text,
+    pageTitle: t("app.pest.pageTitle").text,
+    description: t("app.pest.description").text,
+    farmSelectorLabel: t("app.pest.farmSelectorLabel").text,
+    noFarmsTitle: t("app.pest.noFarmsTitle").text,
+    noFarmsBody: t("app.pest.noFarmsBody").text,
+    addFarm: t("app.pest.addFarm").text,
+    weatherUnavailable: t("app.pest.weatherUnavailable").text,
+    weatherUnavailableBody: t("app.pest.weatherUnavailableBody").text,
+    noPrediction: t("app.pest.noPrediction").text,
+    monitoring: t("app.pest.monitoring").text,
+    monitoringBody: t("app.pest.monitoringBody").text,
+    severity: {
+      warning: t("app.pest.severity.warning").text,
+      critical: t("app.pest.severity.critical").text,
+    },
+    status: {
+      active: t("app.pest.status.active").text,
+      monitoring: t("app.pest.status.monitoring").text,
+    },
+    historyTitle: t("app.pest.historyTitle").text,
+    historySubtitle: t("app.pest.historySubtitle").text,
+    historyEmpty: t("app.pest.historyEmpty").text,
+    historyDate: t("app.pest.historyDate").text,
+    historyFarm: t("app.pest.historyFarm").text,
+    historyPest: t("app.pest.historyPest").text,
+    historyRisk: t("app.pest.historyRisk").text,
+    historyStatus: t("app.pest.historyStatus").text,
+    historyViewAll: t("app.pest.historyViewAll").text,
+    detail: {
+      back: t("app.pest.detail.back").text,
+      weatherConditions: t("app.pest.detail.weatherConditions").text,
+      recommendation: t("app.pest.detail.recommendation").text,
+      farm: t("app.pest.detail.farm").text,
+      crop: t("app.pest.detail.crop").text,
+      stage: t("app.pest.detail.stage").text,
+    },
+    alerts: {
+      title: t("app.pest.alerts.title").text,
+      dismiss: t("app.pest.alerts.dismiss").text,
+      noAlerts: t("app.pest.alerts.noAlerts").text,
+      viewAll: t("app.pest.alerts.viewAll").text,
+      markRead: t("app.pest.alerts.markRead").text,
+      markedRead: t("app.pest.alerts.markedRead").text,
+    },
+    source: {
+      live: t("app.pest.source.live").text,
+      cached: t("app.pest.source.cached").text,
+      demo: t("app.pest.source.demo").text,
+      outdated: t("app.pest.source.outdated").text,
+    },
+    buttons: {
+      refresh: t("app.pest.buttons.refresh").text,
+      updateStage: t("app.pest.buttons.updateStage").text,
+    },
+    errors: {
+      generic: t("app.pest.errors.generic").text,
+      noFarm: t("app.pest.errors.noFarm").text,
+      serviceUnavailable: t("app.pest.errors.serviceUnavailable").text,
+      dataUnavailable: t("app.pest.errors.dataUnavailable").text,
+    },
+    recommendations: {
+      aphid: t("app.pest.recommendations.aphid").text,
+      whitefly: t("app.pest.recommendations.whitefly").text,
+      bollworm: t("app.pest.recommendations.bollworm").text,
+      jassid: t("app.pest.recommendations.jassid").text,
+      armyworm: t("app.pest.recommendations.armyworm").text,
+      rust: t("app.pest.recommendations.rust").text,
+      locust: t("app.pest.recommendations.locust").text,
+      default: t("app.pest.recommendations.default").text,
+    },
+    treatment: {
+      chemical: t("app.pest.treatment.chemical").text,
+      organic: t("app.pest.treatment.organic").text,
+      costEstimate: t("app.pest.treatment.costEstimate").text,
+    },
+    widget: {
+      title: t("app.pest.widget.title").text,
+      allClear: t("app.pest.widget.allClear").text,
+      warningCount: t("app.pest.widget.warningCount").text,
+      warningCountPlural: t("app.pest.widget.warningCountPlural").text,
+      criticalCount: t("app.pest.widget.criticalCount").text,
+      criticalCountPlural: t("app.pest.widget.criticalCountPlural").text,
+      highestRisk: t("app.pest.widget.highestRisk").text,
+      topFarm: t("app.pest.widget.topFarm").text,
+    },
+    growthStage: {
+      title: t("app.pest.growthStage.title").text,
+      crop: t("app.pest.growthStage.crop").text,
+      stage: t("app.pest.growthStage.stage").text,
+      save: t("app.pest.growthStage.save").text,
+      saving: t("app.pest.growthStage.saving").text,
+      success: t("app.pest.growthStage.success").text,
+      error: t("app.pest.growthStage.error").text,
+    },
+  };
+}
+
+/**
+ * Flat translation bundle for the app-control chat feature.
+ * Built server-side and passed as props to client components.
+ */
+export async function getAppControlBundle(): Promise<AppControlBundle> {
+  const locale = await getAppLocale();
+  const dict = await getDictionary(locale);
+  const t = dict.t;
+  return {
+    pageTitle: t("app.appControl.pageTitle").text,
+    floating: {
+      open: t("app.appControl.floating.open").text,
+      close: t("app.appControl.floating.close").text,
+      ariaLabel: t("app.appControl.floating.ariaLabel").text,
+      pulseAria: t("app.appControl.floating.pulseAria").text,
+      unread: t("app.appControl.floating.unread").text,
+    },
+    panel: {
+      minimize: t("app.appControl.panel.minimize").text,
+      maximize: t("app.appControl.panel.maximize").text,
+      close: t("app.appControl.panel.close").text,
+      newTab: t("app.appControl.panel.newTab").text,
+      newTabAria: t("app.appControl.panel.newTabAria").text,
+    },
+    tabs: {
+      close: t("app.appControl.tabs.close").text,
+      closeAria: t("app.appControl.tabs.closeAria").text,
+      deleteTitle: t("app.appControl.tabs.deleteTitle").text,
+      deleteConfirm: t("app.appControl.tabs.deleteConfirm").text,
+      cancel: t("app.appControl.tabs.cancel").text,
+    },
+    sidebar: {
+      title: t("app.appControl.sidebar.title").text,
+      newConversation: t("app.appControl.sidebar.newConversation").text,
+      noConversations: t("app.appControl.sidebar.noConversations").text,
+      rename: t("app.appControl.sidebar.rename").text,
+      delete: t("app.appControl.sidebar.delete").text,
+      deleteTitle: t("app.appControl.sidebar.deleteTitle").text,
+      deleteConfirm: t("app.appControl.sidebar.deleteConfirm").text,
+      cancel: t("app.appControl.sidebar.cancel").text,
+      closeSidebar: t("app.appControl.sidebar.closeSidebar").text,
+    },
+    chat: {
+      placeholder: t("app.appControl.chat.placeholder").text,
+      send: t("app.appControl.chat.send").text,
+      thinking: t("app.appControl.chat.thinking").text,
+      openingGreeting: t("app.appControl.chat.openingGreeting").text,
+      tryAsking: t("app.appControl.chat.tryAsking").text,
+      suggested1: t("app.appControl.chat.suggested1").text,
+      suggested2: t("app.appControl.chat.suggested2").text,
+      suggested3: t("app.appControl.chat.suggested3").text,
+      suggested4: t("app.appControl.chat.suggested4").text,
+      emptyEyebrow: t("app.appControl.chat.emptyEyebrow").text,
+      emptyTitle: t("app.appControl.chat.emptyTitle").text,
+      emptyBody: t("app.appControl.chat.emptyBody").text,
+      onlineStatus: t("app.appControl.chat.onlineStatus").text,
+      typing: t("app.appControl.chat.typing").text,
+      composerHint: t("app.appControl.chat.composerHint").text,
+      farmerYou: t("app.appControl.chat.farmerYou").text,
+      showMore: t("app.appControl.chat.showMore").text,
+      showLess: t("app.appControl.chat.showLess").text,
+      attachment: t("app.appControl.chat.attachment").text,
+      removeAttachment: t("app.appControl.chat.removeAttachment").text,
+      fileTooLarge: t("app.appControl.chat.fileTooLarge").text,
+      unsupportedType: t("app.appControl.chat.unsupportedType").text,
+      confirmYes: t("app.appControl.chat.confirmYes").text,
+      confirmNo: t("app.appControl.chat.confirmNo").text,
+      retry: t("app.appControl.chat.retry").text,
+    },
+    cards: {
+      navigate: t("app.appControl.cards.navigate").text,
+      confirmation: t("app.appControl.cards.confirmation").text,
+      priceTable: t("app.appControl.cards.priceTable").text,
+      pnlSummary: t("app.appControl.cards.pnlSummary").text,
+      weatherForecast: t("app.appControl.cards.weatherForecast").text,
+      recordDiff: t("app.appControl.cards.recordDiff").text,
+    },
+    errors: {
+      serviceUnavailable: t("app.appControl.errors.serviceUnavailable").text,
+      rateLimited: t("app.appControl.errors.rateLimited").text,
+      network: t("app.appControl.errors.network").text,
+      generic: t("app.appControl.errors.generic").text,
+    },
+    aria: {
+      openSidebar: t("app.appControl.aria.openSidebar").text,
+      sendMessage: t("app.appControl.aria.sendMessage").text,
+      chatMessages: t("app.appControl.aria.chatMessages").text,
+      attachFile: t("app.appControl.aria.attachFile").text,
+    },
+  };
+}
+
 /** Flat prop bundle for the client SiteHeader (functions can't cross the RSC boundary). */
 export function siteHeaderStrings(t: Translator) {
   return {
@@ -947,3 +1153,4 @@ export function siteHeaderStrings(t: Translator) {
     dashboard: t("nav.dashboard").text,
   };
 }
+

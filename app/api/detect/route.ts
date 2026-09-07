@@ -48,6 +48,14 @@ export async function POST(request: Request) {
       return errorResponse("validation_error", "No image provided.", 422);
     }
 
+    const clientUuid = (formData.get("client_uuid") as string | null) ?? null;
+    if (
+      clientUuid &&
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(clientUuid)
+    ) {
+      return errorResponse("validation_error", "Invalid client_uuid.", 422);
+    }
+
     console.error("[DETECT] Uploaded file:", {
       name: file.name,
       type: file.type,
@@ -173,12 +181,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const row = await queryOne<{ id: string }>(
+    const row = await queryOne<{ id: string; image_url: string }>(
       `INSERT INTO detect_scans
-         (account_id, image_url, disease_name, confidence, severity, crop, causes,
-          treatment_steps, rescan_timing, caution)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-       RETURNING id`,
+          (account_id, image_url, disease_name, confidence, severity, crop, causes,
+           treatment_steps, rescan_timing, caution)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        RETURNING id, image_url`,
       [
         session.accountId,
         imageUrl,
@@ -190,12 +198,14 @@ export async function POST(request: Request) {
         JSON.stringify(steps),
         rescanTiming,
         caution,
-      ],
+      ]
     );
+
+    const scanResult = row;
 
     return jsonResponse(
       {
-        scanId: row?.id ?? null,
+        scanId: scanResult?.id ?? null,
         diseaseName,
         confidence: confidencePct,
         severity: advice.severity,
@@ -204,7 +214,7 @@ export async function POST(request: Request) {
         steps,
         rescanTiming,
         caution,
-        imageUrl,
+        imageUrl: scanResult?.image_url ?? imageUrl,
       } as const,
       200,
     );

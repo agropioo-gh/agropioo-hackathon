@@ -72,12 +72,14 @@ export async function POST(request: Request) {
         ]
       );
 
+      const row = insertResult.rows[0];
+
       await client.query(
         `UPDATE farms SET growth_stages = $1, updated_at = now() WHERE id = $2`,
         [JSON.stringify(growthStages), input.farm_id]
       );
 
-      return insertResult.rows[0];
+      return row;
     });
 
     return jsonResponse(record, 201);

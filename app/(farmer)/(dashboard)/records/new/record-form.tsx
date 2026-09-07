@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createRecordSchema, type CreateRecordInput } from "@/lib/validation/farms";
 import { RECORD_TYPES, SEASONS, YEAR_OPTIONS, WEATHER_CONDITIONS } from "@/lib/farms/constants";
+import { generateClientUuid, queueWrite } from "@/lib/offline/queue-helpers";
 import type { FarmsBundle } from "@/app/(farmer)/(dashboard)/farms/farms-bundle";
 import {
   ArrowRightIcon,
@@ -20,6 +21,9 @@ export default function RecordForm({ bundle, defaultFarmId }: { bundle: FarmsBun
   const [farms, setFarms] = useState<{ id: string; name: string }[]>([]);
   const [lockedFarmName, setLockedFarmName] = useState<string | null>(null);
   const [weatherOverride, setWeatherOverride] = useState<string>('');
+  const [queuedMessage, setQueuedMessage] = useState<string | null>(null);
+  const [savedFarmId, setSavedFarmId] = useState<string | null>(null);
+  const clientUuidRef = useRef(generateClientUuid());
   const isFarmLocked = Boolean(defaultFarmId);
 
   const {
@@ -80,11 +84,13 @@ export default function RecordForm({ bundle, defaultFarmId }: { bundle: FarmsBun
   const onSubmit = async (data: CreateRecordInput) => {
     setStatus('loading');
     setServerErrors({});
+    setQueuedMessage(null);
     try {
+      const payload = { ...data, client_uuid: clientUuidRef.current };
       const res = await fetch('/api/records', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const body = await res.json() as Record<string, unknown>;
@@ -100,11 +106,13 @@ export default function RecordForm({ bundle, defaultFarmId }: { bundle: FarmsBun
         return;
       }
       await res.json();
+      setSavedFarmId(data.farm_id);
       setStatus('saved');
-      setTimeout(() => router.push('/farms'), 600);
     } catch {
-      setServerErrors({ form: 'Network error' });
-      setStatus('error');
+      await queueWrite('/api/records', 'POST', { ...data, client_uuid: clientUuidRef.current });
+      setSavedFarmId(data.farm_id);
+      setQueuedMessage('Saved offline — will sync when you are back online.');
+      setStatus('saved');
     }
   };
 
@@ -121,10 +129,12 @@ export default function RecordForm({ bundle, defaultFarmId }: { bundle: FarmsBun
           {bundle.records.new.success.description}
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <button type="button" onClick={() => router.push('/farms')} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-agro-canopy px-5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-agro-forest hover:shadow-md active:translate-y-0">
-            {bundle.records.new.success.viewFarms}
-            <ArrowRightIcon size={16} />
-          </button>
+          {savedFarmId && (
+            <button type="button" onClick={() => router.push(`/farms/${savedFarmId}`)} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-agro-canopy px-5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-agro-forest hover:shadow-md active:translate-y-0">
+              {bundle.records.new.success.viewFarms}
+              <ArrowRightIcon size={16} />
+            </button>
+          )}
           <button type="button" onClick={() => setStatus('idle')} className="inline-flex min-h-12 items-center justify-center rounded-lg border border-agro-canopy/30 bg-white px-5 text-sm font-semibold text-agro-forest transition-colors duration-200 hover:border-agro-canopy hover:bg-agro-mint">
             Log another
           </button>
@@ -260,6 +270,7 @@ export default function RecordForm({ bundle, defaultFarmId }: { bundle: FarmsBun
         )}
       </button>
       {(serverErrors.form || status === 'error') && <p className="text-center text-sm font-medium text-agro-forest">{serverErrors.form}</p>}
+      {queuedMessage && <p className="text-center text-sm font-medium text-agro-forest">{queuedMessage}</p>}
     </form>
   );
 }
