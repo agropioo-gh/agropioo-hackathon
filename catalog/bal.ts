@@ -32,6 +32,7 @@ export const bal: Partial<Record<CatalogKey, string>> = {
   "home.hero.noteOptimal": "مناسب",
   "home.ticker.ariaLabel": "اگروپیو پلیٹ فارم کی صلاحیتیں",
   "home.ticker.cropDoctor": "اے آئی فصل ڈاکٹر",
+
   "home.ticker.mandiPrices": "منڈی قیمتوں کی جانکاری",
   "home.ticker.weatherAdvisories": "موسم کے مطابق مشورے",
   "home.ticker.farmRecords": "ڈیجیٹل فارم ریکارڈ",
@@ -713,8 +714,8 @@ export const bal: Partial<Record<CatalogKey, string>> = {
   "app.shell.nav.weather": "موسم",
   "app.shell.nav.notifications": "اطلاعات",
   "app.shell.nav.settings": "ترتیبات",
+
   "app.shell.nav.more": "مزید",
-  "app.shell.nav.pest": "کیڑوں کی خبرداری",
   "app.shell.signOut": "لاگ آؤٹ",
   "app.shell.aria.farmerTools": "کسان کے اوزار",
   "app.shell.aria.currentPage": "موجودہ صفحہ",
@@ -1590,7 +1591,6 @@ export const bal: Partial<Record<CatalogKey, string>> = {
   "offline.installAction": "ہوم اسکرین نو شامل کرو",
   "offline.dismiss": "رد کرو",
   "offline.iosPrompt": "مکمل آف لائن رسائی کے لئے اپنے ہوم اسکرین نو ایگروپیو شامل کرو۔ شیئر بٹن نو ٹیپ کرو، فر ہوم اسکرین نو شامل کرو۔",
-
   /* ── Pest Outbreak Prediction ── */
   "app.pest.eyebrow": "کیڑوں کی پیشگوئی",
   "app.pest.pageTitle": "کیڑوں کے ٹوٹ پڑنے کی پیشگوئی",

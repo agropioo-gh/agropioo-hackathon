@@ -32,6 +32,7 @@ export const sd: Partial<Record<CatalogKey, string>> = {
   "home.hero.noteOptimal": "بهترين",
   "home.ticker.ariaLabel": "Agropioo پليٽ فارم جا قابلية",
   "home.ticker.cropDoctor": "AI فصل ڊاڪٽر",
+
   "home.ticker.mandiPrices": "منڊي قيمت جي انڊلنس",
   "home.ticker.weatherAdvisories": "موسم واري مشورن",
   "home.ticker.farmRecords": "ڊجٽل کيec ریکارڊ",
@@ -358,6 +359,7 @@ export const sd: Partial<Record<CatalogKey, string>> = {
   "feat.field.headingA": "توھان جي زمين آسمان مان ماپيل.",
   "feat.field.headingB": "توھان جي فصل بيانات جي مل تي قيمت آهي.",
   "feat.field.sub": "سیٽلائٽ هر acre تي ۽ هر قرباني منڊي تي نگراني — تنهن لاءِ ته وڌنڊ ۽ وڌري سلي لمحو ۾ ٿيندا.",
+  "feat.field.ndviCode": "F·05 · Satellite",
   "feat.field.ndviTitle": "NDVI کhet نگراني",
   "feat.field.ndviDesc": "هڪ ڀيٽ توھان جي حدون علامت ڪريو؛ صحت جا زون هر صاف سیٽلائٽ کان وڌندا آهن — ڪمزور ڌارا آنکھ چيڏوڳي اڳي وڌي آهن.",
   "feat.field.ndviMock": "کhet جي صحت ڳريڊ جتي ڳاڙهو رنگ ڳڍي فصل جي وڌنڊ ظاهر ڪري ٿو",
@@ -691,7 +693,6 @@ export const sd: Partial<Record<CatalogKey, string>> = {
   "app.shell.nav.notifications": "خبرون",
   "app.shell.nav.settings": "ترتيبون",
   "app.shell.nav.more": "وڌيڪ",
-  "app.shell.nav.pest": "سڻدڻ جي خبرداري",
   "app.shell.signOut": "لاگ آئيٽ",
   "app.shell.aria.farmerTools": "کيec وارو جا ڪال",
   "app.shell.aria.currentPage": "موجوده صفحو",
@@ -1577,9 +1578,11 @@ export const sd: Partial<Record<CatalogKey, string>> = {
   "app.crops.rotation.okra_then_cowpea": "بھنڊي ۽ لobia گردش جو فائدو",
   "app.crops.rotation.garlic_then_wheat": "لہسن ۽ ویټ گردش جو فائدو",
 
+  /* ── Satellite monitoring ─────────────────────────────── */
   "app.crops.reason.low_risk": "{crop} ڪم خطرو آهي.",
   "app.shell.nav.profitLoss": "فائدہ / نقصان",
   "app.records.noRecordsFound": "ھن فلٹر لاء کوئي ریکارڊ نه مليل.",
+
   "offline.title": "توهين آف لائن آهيو",
   "offline.reload": "ٻيهر هڅه ڪريو",
   "offline.home": "هوم ته وڃو",
@@ -1590,7 +1593,6 @@ export const sd: Partial<Record<CatalogKey, string>> = {
   "offline.iosPrompt": "مکمل آف لائن رسائي لاء توهان جي هوم اسکرين ته اڳروپيو شامل ڪريو. شیئر بٽن ٿيپي، ٻيهر هوم اسکرين ته شامل ڪريو.",
   "offline.banner": "توهين آف لائن آهيو. توهان جو ڊيٽا محفوظ آهي ته مکان کان ڊائونلوڊ ڪيو ويو آهي.",
   "offline.body": "هي صف توهان جي ڊيوائس ته ڊائونلوڊ ڪيو ويو آهي ته توهين ٻيهر ڪم ڪري سکو. جيڪڏهن توهان جي انترنت واپس آئي، هر ڊيٽا جي네ه شتون آهي محفوظ ٿي وڃي، اتو سان خودڪار هميشو ٿي وڃي.",
-
   /* ── Pest Outbreak Prediction ── */
   "app.pest.eyebrow": "کیڑن جی پیشن گوئی",
   "app.pest.pageTitle": "کیڑن ٹوٽ پڻن جی پیشن گوئی",
