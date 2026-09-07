@@ -911,7 +911,7 @@ export const sd: Partial<Record<CatalogKey, string>> = {
   "app.records.new.success.heading": "ریکارڊ ڊيمو ۾ محفوظ ٿيو",
   "app.records.new.success.description": "پورن بلڊ ۾ هن اندراج کي توھان جي کيec جي ریکارڊ ۾ ظاهر ٿي ۽ مستقبل جا مشورا بہتر ڪن.",
   "app.records.new.success.backToDashboard": "ڊيش بورڊ تي واپس",
-  "app.records.new.success.viewFarms": "مaji کيec ڏيڪو",
+  "app.records.new.success.viewFarms": "هن کيec تي وڃو",
   "app.records.new.errors.farmRequired": "هڪ کيec چونڊيو جتي هن واقعو ٿيسي.",
   "app.records.new.errors.dateRequired": "تاريخ چونڊيو.",
 

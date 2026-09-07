@@ -886,7 +886,7 @@ export const ps: Partial<Record<CatalogKey, string>> = {
   "app.records.new.success.heading": "یاداشت د ډیمو کې خوندي شوې",
   "app.records.new.success.description": "د بشپړ جوړونو کې دا یاداشت ستا د ځمکه یاداشتونو لیست کې شي او راتلونکي مشورې ډیره ښه کوي.",
   "app.records.new.success.backToDashboard": "ډیشبورډ ته بیرته",
-  "app.records.new.success.viewFarms": "زما ځمکې وګورئ",
+  "app.records.new.success.viewFarms": "دې ځمکې ته لاړ شه",
   "app.records.new.errors.farmRequired": "ځمکه غوره کړئ.",
   "app.records.new.errors.dateRequired": "نیټه غوره کړئ.",
   "app.advisor.pageTitle": "مشیر",

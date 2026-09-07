@@ -956,7 +956,7 @@ export const en = {
   "app.records.new.success.description":
     "In the full build this entry would appear in your farm\u2019s record log and sharpen future advisories.",
   "app.records.new.success.backToDashboard": "Back to dashboard",
-  "app.records.new.success.viewFarms": "View my farms",
+  "app.records.new.success.viewFarms": "Go to this farm",
   "app.records.new.errors.farmRequired": "Pick which farm this happened on.",
   "app.records.new.errors.dateRequired": "Pick the date.",
 
