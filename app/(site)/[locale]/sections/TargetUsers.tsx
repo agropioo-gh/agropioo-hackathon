@@ -35,36 +35,36 @@ export default async function TargetUsers({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <section className="w-full border-t border-agro-clay/70 bg-white px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+    <section className="w-full border-t border-agro-clay/70 bg-white px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3">
           {users.map((user, index) => (
             <div
               key={user.title}
-              className="reveal group flex flex-col rounded-2xl border border-agro-sprout/80 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-agro-canopy/50 hover:shadow-xl sm:p-8"
+              className="reveal group flex flex-col rounded-xl border border-agro-sprout/60 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-agro-canopy/50 hover:shadow-md sm:p-6"
             >
               <div className="flex items-start justify-between">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-agro-mint text-agro-canopy ring-1 ring-agro-sprout transition-colors duration-300 group-hover:bg-agro-canopy group-hover:text-white">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-agro-mint text-agro-canopy ring-1 ring-agro-sprout transition-colors duration-200 group-hover:bg-agro-canopy group-hover:text-white">
                   {user.icon}
                 </span>
                 <span
-                  className="font-mono text-sm font-semibold tracking-widest text-agro-canopy/40 transition-colors duration-300 group-hover:text-agro-canopy"
+                  className="font-mono text-xs font-semibold tracking-widest text-agro-canopy/40 transition-colors duration-200 group-hover:text-agro-canopy"
                   aria-hidden="true"
                 >
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="mt-6 font-display text-xl font-medium tracking-tight text-agro-ink">
+              <h3 className="mt-4 text-base font-semibold tracking-tight text-agro-ink">
                 {user.title}
               </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-agro-slate">
+              <p className="mt-1.5 text-sm leading-relaxed text-agro-slate">
                 {user.description}
               </p>
             </div>
           ))}
         </div>
 
-        <p className="reveal mt-10 flex items-center justify-center gap-4 text-center font-mono text-xs uppercase tracking-[0.18em] text-agro-canopy">
+        <p className="reveal mt-8 flex items-center justify-center gap-4 text-center font-mono text-xs uppercase tracking-[0.18em] text-agro-canopy">
           <span className="hidden h-px w-10 bg-agro-clay sm:inline-block" aria-hidden="true" />
           {t("home.users.tagline").text}
           <span className="hidden h-px w-10 bg-agro-clay sm:inline-block" aria-hidden="true" />

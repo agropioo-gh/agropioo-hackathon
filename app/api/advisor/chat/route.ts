@@ -12,6 +12,7 @@ import { chatSchema } from "@/lib/validation/advisor";
 import { createTriageAgent } from "@/lib/advisor/agents/triage";
 import { getCurrentSeason } from "@/lib/advisor/context";
 import type { FarmerContext, FarmSummary } from "@/lib/advisor/context";
+import "@/lib/openai-config";
 import { run } from "@openai/agents";
 import { toSSEStream, sseHeaders } from "@/lib/advisor/streaming";
 
