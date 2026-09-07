@@ -1,0 +1,27 @@
+name: Pest Outbreak Prediction — Twice-Daily Cron
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+jobs:
+  predict-and-alert:
+    runs-on: ubuntu-latest
+    env:
+      APP_URL: ${{ secrets.APP_URL }}
+      PEST_CRON_SECRET: ${{ secrets.PEST_CRON_SECRET }}
+    steps:
+      - name: Skip when secrets are missing
+        if: ${{ env.APP_URL == '' || env.PEST_CRON_SECRET == '' }}
+        run: |
+          echo "APP_URL or PEST_CRON_SECRET is not set. Skipping."
+          exit 0
+
+      - name: Trigger pest prediction cron
+        run: |
+          curl -sS -X POST "$APP_URL/api/cron/pest-prediction" \
+            -H "Authorization: Bearer $PEST_CRON_SECRET" \
+            -H "Content-Type: application/json" \
+            -w "\nhttp_status=%{http_code}\n"
