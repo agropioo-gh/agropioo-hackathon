@@ -74,15 +74,14 @@ Farmers sell at mandis (wholesale markets) without knowing real prices. A wheat 
 - Phone: Android smartphone (budget devices, intermittent connectivity)
 - Literacy: Low — need voice-like UX, local language, simple navigation
 
-### Secondary: Agricultural Officers & Field Workers
+### Secondary: Field Workers
 
-- Government extension officers managing 500+ farmers each
 - Need dashboard views, farm-level summaries, bulk advisory capability
 
-### Tertiary: Agri-Businesses & Policy Makers
+### Tertiary: Agri-Businesses 
 
 - Seed companies, fertilizer suppliers, banks
-- Anonymized aggregate data for crop forecasting, loan underwriting
+- Anonymized aggregate data for crop forecasting
 
 ---
 

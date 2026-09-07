@@ -40,7 +40,7 @@
 
 ---
 
-### Feature #2: Satellite-Based Field Monitoring
+### Feature #2: Satellite Field Monitoring
 
 **Problem:** Farmers cannot physically inspect large fields daily and lack visibility into crop health variations across their land.
 
@@ -97,14 +97,14 @@
 - Prices displayed on dashboard with market-wise comparison
 - LSTM or Facebook Prophet model trained on historical price data
 - Price trend shown as chart with buy/sell/hold recommendation
-- SMS/app alerts when price crosses farmer's target threshold
+- Email/app alerts when price crosses farmer's target threshold
 
 **APIs / Tech Stack:**
 - **Agmarknet API** (Pakistani government mandi prices)
 - **Data.gov.in** open data portal
 - LSTM / Prophet / XGBoost (price prediction models)
 - Chart.js or Recharts (price visualization)
-- Twilio API (SMS price alerts)
+- Email API (price alerts)
 
 **Impact Metric:** Farmers can earn 15-25% more by selling at the right time.
 
@@ -185,6 +185,29 @@
 
 ---
 
+### Feature #8: Carbon Footprint Tracker & Carbon Credit Estimator
+
+**Problem:** Farmers have no way to measure or monetize their sustainable farming practices.
+
+**Solution:** Tracks farm-level carbon emissions and sequestration → estimates carbon credits earned → connects farmers with carbon credit markets for additional income.
+
+**How It Works (No Hardware):**
+- System calculates carbon footprint based on farm inputs (fertilizer, fuel, irrigation)
+- Carbon sequestration estimated from crop type, soil health, and farming practices
+- ML model generates carbon credit estimates
+- Dashboard shows environmental impact and potential earnings
+- Connects with carbon credit marketplaces
+
+**APIs / Tech Stack:**
+- IPCC emission factors database
+- FAO EX-ACT (Carbon Accounting Tool)
+- Soil carbon measurement APIs
+- Blockchain for credit verification (optional)
+
+**Impact Metric:** Can generate additional PKR5,000-PKR15,000 per acre in carbon credit income.
+
+---
+
 ## Tier 3: Wow Factor Features
 
 ---
@@ -237,48 +260,26 @@
 
 ---
 
-### Feature #11: Carbon Footprint Tracker & Carbon Credit Estimator
 
-**Problem:** Sustainable farmers are not rewarded for eco-friendly practices, and carbon credit markets are inaccessible to smallholder farmers.
 
-**Solution:** Farmer logs their farming practices (organic fertilizers, reduced tillage, cover cropping, drip irrigation) → system calculates their carbon sequestration → estimates carbon credits they could earn → connects them to carbon marketplaces.
-
-**How It Works (No Hardware):**
-- Farmer inputs practices via simple checklist UI
-- Carbon calculation engine uses IPCC guidelines and FAO methodologies
-- Satellite data (Feature #2) validates green cover claims
-- Carbon credits estimated in tonnes of CO2 equivalent
-- Integration with voluntary carbon market registries (Verra, Gold Standard)
-- Blockchain-verified certificates (optional, for transparency)
-
-**APIs / Tech Stack:**
-- IPCC Carbon Calculator methodology
-- FAO EX-ACT (Ex-Ante Carbon-balance Tool) framework
-- Satellite NDVI data (from Feature #2) for validation
-- Optional: Polygon/Alchemy for blockchain certificates
-
-**Impact Metric:** A 5-acre farmer could earn PKR8,000-PKR20,000/year from carbon credits — a completely new income stream.
-
----
-
-### Feature #12: Offline-First PWA + SMS Alerts
+### Feature #11: Offline-First PWA + Email Alerts
 
 **Problem:** Rural areas have poor or no internet connectivity — apps that require constant internet are useless in the field.
 
-**Solution:** Agropioo works as a Progressive Web App (PWA) that functions offline, syncs data when internet is available, and sends critical alerts via SMS when the farmer is offline.
+**Solution:** Agropioo works as a Progressive Web App (PWA) that functions offline, syncs data when internet is available, and sends critical alerts via Email when the farmer is offline.
 
 **How It Works (No Hardware):**
 - App built as PWA with service workers for offline caching
 - All advisory, crop guides, and scheme info cached locally
 - Farmer can record observations, take photos, and calculate P&L offline
 - When internet returns, data auto-syncs to server
-- Critical alerts (weather warnings, pest outbreaks, price spikes) sent via SMS through Twilio
+- Critical alerts (weather warnings, pest outbreaks, price spikes) sent via Email
 
 **APIs / Tech Stack:**
 - **Next.js / React** with PWA plugin (service workers, manifest)
 - **Workbox** (offline caching strategy)
 - **IndexedDB** (local data storage)
-- **Twilio API** (SMS alerts when offline)
+- **Email API** (alerts when offline)
 - Background sync API for data upload
 
 **Impact Metric:** Increases app usability from ~40% to ~95% in rural Pakistan where 4G coverage is spotty.
@@ -296,10 +297,10 @@
 | 5 | Regional Language Voice Chatbot | NLP / Speech | Whisper, Google TTS, Gemini | 🟡 Differentiator |
 | 6 | Crop Recommendation Engine | ML / Analytics | Soil Health Card, ICAR | 🟡 Differentiator |
 | 7 | Farm Profit/Loss Calculator | Finance / Analytics | CACP, Mandi API | 🟡 Differentiator |
-| 8 | AI Pest Outbreak Prediction | ML / Predictive | Weather + Pest Data APIs | 🟢 Wow Factor |
-| 9 | Voice-Enabled UI by Voice Agents | Voice AI / NLP | Whisper, Coqui TTS, Ollama | 🟢 Wow Factor |
-| 10 | Carbon Footprint Tracker & Carbon Credit Estimator | Sustainability / Blockchain | IPCC, FAO EX-ACT | 🟢 Wow Factor |
-| 11 | Offline-First PWA + SMS Alerts | PWA / SMS | Twilio, Workbox | 🟢 Wow Factor |
+| 8 | Carbon Footprint Tracker & Carbon Credit Estimator | Sustainability / Blockchain | IPCC, FAO EX-ACT | 🟢 Wow Factor |
+| 9 | AI Pest Outbreak Prediction | ML / Predictive | Weather + Pest Data APIs | 🟢 Wow Factor |
+| 10 | Voice-Enabled UI by Voice Agents | Voice AI / NLP | Whisper, Coqui TTS, Ollama | 🟢 Wow Factor |
+| 11 | Offline-First PWA + Email Alerts | PWA / Email | Email API, Workbox | 🟢 Wow Factor |
 
 ---
 
@@ -311,7 +312,7 @@
 2. **Satellite Field Monitoring** — Shows technical depth (real satellite imagery)
 3. **Mandi Price Predictor** — Solves a REAL farmer pain point
 4. **Regional Language Voice Bot** — Accessibility wins judge hearts
-5. **Offline-First + SMS Alerts** — Shows practical, real-world thinking
+5. **Offline-First + Email Alerts** — Shows practical, real-world thinking
 
 **Demo Flow:**
 > *"Meet Ramesh, a farmer in Punjab. He opens Agropioo on his phone..."*
