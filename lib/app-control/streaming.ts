@@ -59,7 +59,7 @@ export type AppControlEvent =
   | { type: "navigation_button"; path: string; label: string }
   | { type: "retry"; message: string };
 
-const ACTION_CARD_RE = /\[ACTION_CARD:(\{.*?\})\]/s;
+const ACTION_CARD_RE = /\[ACTION_CARD:(\{[\s\S]*?\})\]/;
 const NAVIGATION_RE = /\[NAVIGATION:(.*?)\|(.*?)\]/;
 const RETRY_RE = /\[RETRY:(.*?)\]/;
 
@@ -127,15 +127,21 @@ export function toAppControlSSEStream(
         controller.enqueue(encoder.encode(`data: ${opening}\n\n`));
 
         for await (const event of result) {
-          if (event.type === "raw_model_stream_event" && event.data.type === "output_text_delta") {
-            accumulated += event.data.delta;
-            const payload = JSON.stringify({ type: "text", delta: event.data.delta });
+          const ev = event as {
+            type: string;
+            name?: string;
+            output?: unknown;
+            data?: { type?: string; delta?: string };
+          };
+          if (ev.type === "tool_call_stream_event" || ev.type === "tool_call_item") {
+            onEvent?.({ type: "tool_start", name: ev.name ?? "unknown" });
+          } else if (ev.type === "tool_output_stream_event" || ev.type === "tool_output_item") {
+            const resultText = typeof ev.output === "string" ? ev.output : JSON.stringify(ev.output);
+            onEvent?.({ type: "tool_result", name: ev.name ?? "unknown", result: resultText });
+          } else if (ev.type === "raw_model_stream_event" && ev.data?.type === "output_text_delta") {
+            accumulated += ev.data.delta ?? "";
+            const payload = JSON.stringify({ type: "text", delta: ev.data.delta });
             controller.enqueue(encoder.encode(`data: ${payload}\n\n`));
-          } else if (event.type === "tool_call_stream_event" || event.type === "tool_call_item") {
-            onEvent?.({ type: "tool_start", name: event.name ?? "unknown" });
-          } else if (event.type === "tool_output_stream_event" || event.type === "tool_output_item") {
-            const resultText = typeof event.output === "string" ? event.output : JSON.stringify(event.output);
-            onEvent?.({ type: "tool_result", name: event.name ?? "unknown", result: resultText });
           }
         }
 

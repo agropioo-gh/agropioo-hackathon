@@ -1,5 +1,6 @@
 import { tool } from "@openai/agents";
 import { z } from "zod";
+import { query } from "@/lib/db";
 
 export const createRecord = tool({
   name: "create_record",

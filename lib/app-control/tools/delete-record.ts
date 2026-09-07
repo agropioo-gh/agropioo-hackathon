@@ -1,6 +1,6 @@
 import { tool } from "@openai/agents";
 import { z } from "zod";
-import { query } from "@/lib/db";
+import { query, queryOne } from "@/lib/db";
 
 export const deleteRecord = tool({
   name: "delete_record",
