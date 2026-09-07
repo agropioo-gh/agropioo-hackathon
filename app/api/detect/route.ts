@@ -184,9 +184,8 @@ export async function POST(request: Request) {
     const row = await queryOne<{ id: string; image_url: string }>(
       `INSERT INTO detect_scans
           (account_id, image_url, disease_name, confidence, severity, crop, causes,
-           treatment_steps, rescan_timing, caution, client_uuid)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-        ON CONFLICT (client_uuid) DO NOTHING
+           treatment_steps, rescan_timing, caution)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING id, image_url`,
       [
         session.accountId,
@@ -199,17 +198,10 @@ export async function POST(request: Request) {
         JSON.stringify(steps),
         rescanTiming,
         caution,
-        clientUuid,
       ]
     );
 
-    let scanResult = row;
-    if (!scanResult && clientUuid) {
-      scanResult = await queryOne<{ id: string; image_url: string }>(
-        `SELECT id, image_url FROM detect_scans WHERE client_uuid = $1 LIMIT 1`,
-        [clientUuid]
-      );
-    }
+    const scanResult = row;
 
     return jsonResponse(
       {

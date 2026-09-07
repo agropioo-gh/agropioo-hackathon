@@ -395,7 +395,6 @@ const LocationSearch = forwardRef<{ skipAutoGeocode: () => void }, {
     if (autoGeocodeRef.current) clearTimeout(autoGeocodeRef.current);
     if (query.length < 3 || open) return;
     if (skipAutoGeocodeRef.current) {
-      skipAutoGeocodeRef.current = false;
       return;
     }
 
@@ -461,6 +460,7 @@ const LocationSearch = forwardRef<{ skipAutoGeocode: () => void }, {
           id="farm-location"
           value={query}
           onChange={(e) => {
+            skipAutoGeocodeRef.current = false;
             setQuery(e.target.value);
             onChange(e.target.value);
           }}
@@ -775,7 +775,7 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
 
           const fullName = result.display_name || placeName;
           setSelectedLocationName(fullName);
-          setValue("location", placeName);
+          setValue("location", fullName);
 
           const matchedDistrict = matchDistrict(
             addr.district ||
@@ -1078,7 +1078,7 @@ export default function NewFarmForm({ bundle }: { bundle: FarmsBundle }) {
             type="date"
             value={sowing}
             onChange={(e) => setSowing(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-agro-sprout bg-white px-3 py-2.5 text-sm text-agro-ink outline-none focus:border-agro-canopy focus:ring-2 focus:ring-agro-canopy/20"
+            className="focus-ring-none mt-2 h-12 w-full rounded-xl border border-agro-sprout bg-white px-4 text-sm text-agro-ink transition-colors duration-200 focus:outline-none focus:ring-2 focus:border-agro-canopy focus:ring-agro-canopy/20"
           />
         </div>
 

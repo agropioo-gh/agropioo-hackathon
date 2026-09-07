@@ -1,8 +1,30 @@
 "use client";
 
+import { useState } from "react";
+import type { ComponentProps } from "react";
+
 type ExpenseRow = { category: string; amount: number };
 
+const CATEGORY_LABELS: Record<string, string> = {
+  seed: "Seed",
+  fertilizer: "Fertilizer",
+  labor: "Labor",
+  irrigation: "Irrigation",
+  transport: "Transport",
+  other: "Other",
+};
+
+function categoryLabel(cat: string): string {
+  return CATEGORY_LABELS[cat] ?? cat;
+}
+
+function formatPct(value: number): string {
+  return `${Math.round(value * 10) / 10}%`;
+}
+
 export default function ExpenseBreakdown({ expenses }: { expenses: ExpenseRow[] }) {
+  const [hovered, setHovered] = useState<string | null>(null);
+
   if (expenses.length === 0) {
     return (
       <div className="mt-4 flex flex-col items-center gap-2 rounded-xl border border-dashed border-agro-sprout bg-agro-paper p-6 text-center">
@@ -75,20 +97,50 @@ export default function ExpenseBreakdown({ expenses }: { expenses: ExpenseRow[] 
     ].join(" ");
   };
 
+  const hoveredSlice = hovered ? slices.find((s) => s.category === hovered) : null;
+  const hoveredPct = hoveredSlice && total > 0 ? (hoveredSlice.value / total) * 100 : 0;
+
   return (
     <div className="mt-4 flex flex-col items-center gap-3">
-      <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full max-w-sm">
-        {slices.map((slice, i) => (
-          <path key={slice.category} d={pathForSlice(slice)} fillRule="evenodd" className={`stroke-white ${paletteClasses[i % paletteClasses.length]}`} strokeWidth="2" />
-        ))}
-      </svg>
-      <div className="grid grid-cols-2 gap-2">
-        {categories.map((cat, i) => (
-          <div key={cat} className="flex items-center gap-2">
-            <span className={`h-3 w-3 shrink-0 rounded-sm ${legendBgClasses[i % legendBgClasses.length]}`} />
-            <span className="text-xs text-agro-ink">{cat}: PKR {(totals[cat] || 0).toLocaleString("en-PK")}</span>
+      <div className="relative w-full max-w-sm">
+        <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full">
+          {slices.map((slice, i) => {
+            const props: ComponentProps<"path"> = {
+              d: pathForSlice(slice),
+              fillRule: "evenodd",
+              className: `cursor-pointer stroke-white transition-opacity duration-150 ${paletteClasses[i % paletteClasses.length]}`,
+              strokeWidth: "2",
+              onMouseEnter: () => setHovered(slice.category),
+              onMouseLeave: () => setHovered(null),
+            };
+            return <path key={slice.category} {...props} />;
+          })}
+        </svg>
+        {hoveredSlice && (
+          <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-agro-sprout bg-white px-4 py-2 text-center shadow-lg">
+            <p className="text-sm font-semibold text-agro-forest">{categoryLabel(hoveredSlice.category)}</p>
+            <p className="font-mono text-xs text-agro-slate">{formatPct(hoveredPct)}</p>
           </div>
-        ))}
+        )}
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {categories.map((cat, i) => {
+          const amount = totals[cat] || 0;
+          const pct = total > 0 ? (amount / total) * 100 : 0;
+          return (
+            <div
+              key={cat}
+              className="flex items-center gap-2 rounded-lg px-1 py-0.5 transition-colors hover:bg-agro-mint"
+              onMouseEnter={() => setHovered(cat)}
+              onMouseLeave={() => setHovered(null)}
+            >
+              <span className={`h-3 w-3 shrink-0 rounded-sm ${legendBgClasses[i % legendBgClasses.length]}`} />
+              <span className="text-xs text-agro-ink">
+                {categoryLabel(cat)}: <span className="font-mono">{formatPct(pct)}</span> · PKR {amount.toLocaleString("en-PK")}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
