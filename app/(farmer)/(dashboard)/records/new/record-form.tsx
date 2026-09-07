@@ -209,13 +209,15 @@ export default function RecordForm({ bundle, defaultFarmId }: { bundle: FarmsBun
       </div>
 
       <div>
-        <label htmlFor="record-title" className="block text-sm font-semibold text-agro-ink">{bundle.records.new.fields.title} <span className="text-agro-slate font-normal">({bundle.records.new.fields.optional})</span></label>
+        <label htmlFor="record-title" className="block text-sm font-semibold text-agro-ink">{bundle.records.new.fields.title} <span className="text-agro-forest">*</span></label>
         <input id="record-title" {...register('title')} className={inputClass(errors.title?.message)} />
+        {(errors.title || serverErrors.title) && <p className="mt-1.5 text-sm font-medium text-agro-forest">{errors.title?.message || serverErrors.title}</p>}
       </div>
 
       <div>
-        <label htmlFor="record-note" className="block text-sm font-semibold text-agro-ink">{bundle.records.new.fields.details}</label>
+        <label htmlFor="record-note" className="block text-sm font-semibold text-agro-ink">{bundle.records.new.fields.details} <span className="text-agro-forest">*</span></label>
         <textarea id="record-note" rows={3} {...register('note')} className={`${inputClass(errors.note?.message)} resize-y`} />
+        {(errors.note || serverErrors.note) && <p className="mt-1.5 text-sm font-medium text-agro-forest">{errors.note?.message || serverErrors.note}</p>}
       </div>
 
       {isHarvest && (
