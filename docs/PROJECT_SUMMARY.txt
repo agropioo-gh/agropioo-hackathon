@@ -1,0 +1,7 @@
+AGROPIOO - AI agriculture advisor for Pakistani farmers. Built by Sheikh Mohammad Ahmed (Team Lead) and Mustafa Shahzad (Co-Creator), Aplinode. Software-only, no IoT/hardware. AI Hackathon Pakistan 2026, ~2 weeks.
+
+Agropioo gives smallholder farmers in Pakistan a personal AI advisor in their own language (8 languages: English, Urdu, Punjabi, Pashto, Sindhi, Saraiki, Balochi, Hindko; RTL for Urdu/Pashto). Farmers make 60+ critical decisions per season - sowing, fertilizer, irrigation, when to sell - with no tools and no expert. Agropioo answers: What to do, when to do it.
+
+Built with Next.js 16 Route Handlers to Neon Lakebase Postgres (no Express), offline-first PWA (Serwist + IndexedDB). Features: an 8-agent AI advisor (@openai/agents, RAG over 21 docs, Ollama nomic-embed-text embeddings, streaming, guardrails); crop disease detection (HuggingFace vision + TensorFlow.js, Cloudinary); weather advisory (OpenWeather, growth-stage alerts); price tracker (live rates from 5 sources, 151 mandis, SELL/HOLD); crop recommendation (40+ crops, 16 soil profiles); pest outbreak prediction; profit/loss + ROI; digital farm records (Leaflet GPS); in-app chat; notifications center.
+
+Stack: React 19, Tailwind v4, Neon pgvector, OpenAI (gpt-4o-mini), Ollama, TensorFlow.js, HuggingFace, Cloudinary, Leaflet, Photon, OpenWeather, Zod, react-hook-form, bcryptjs, jose, nodemailer. 66 route handlers, 85+ components, 35 test files, 16 migrations.

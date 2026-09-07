@@ -10,16 +10,16 @@ Five features in one platform: AI advisor (multi-agent, routes questions to crop
 
 SECTION 3 — TECHNICAL APPROACH AND TECHNOLOGIES
 
-Full-stack Next.js 16, no separate backend. AI advisor built on @openai/agents with triage-and-handoff architecture — 5 specialist agents with tools for live farm records, weather, prices, and knowledge base. Neon Lakebase Postgres. Auth via bcryptjs + jose JWT + OTP verification. 8-locale language system with database-stored translations. Stack: Next.js 16, React 19, @openai/agents, pg, zod, Tailwind CSS v4.
+Full-stack Next.js 16, no separate backend. AI advisor built on @openai/agents with triage-and-handoff architecture — 8 specialized agents (Triage, Crop Advisor, Weather, Prices, Schemes, Farm Data, Crop Recommendation, Handoff) with tools for live farm records, weather, prices, and knowledge base. Neon Lakebase Postgres. Auth via bcryptjs + jose JWT + OTP verification. 8-locale language system with database-stored translations. Stack: Next.js 16, React 19, @openai/agents, pg, zod, Tailwind CSS v4.
 
 
 SECTION 4 — DELIVERY PLAN
 
-Built: full auth, onboarding, farm management, farm records, AI advisor (5 agents + streaming), weather, dashboard, prices page, disease detection UI, notifications, 8-locale system with RTL, tests, seeded knowledge base.
+Built: full auth, onboarding, farm management, farm records, AI advisor (8 agents + streaming), weather, dashboard, prices page, disease detection UI, notifications, 8-locale system with RTL, tests, seeded knowledge base.
 
 Next: wire disease detection to live Vision API, connect live mandi data, complete scheme eligibility, mobile end-to-end test.
 
-Solo build by Sheikh Mohammad.
+Built by Sheikh Mohammad Ahmed (Team Lead) and Mustafa Shahzad (Co-Creator), Aplinode.
 
 
 SECTION 5 — REPOSITORY / DEMO LINK

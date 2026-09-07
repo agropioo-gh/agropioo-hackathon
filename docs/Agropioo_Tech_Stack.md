@@ -8,7 +8,7 @@ Next.js handles:
 
 - Frontend/UI (React 19 Server Components by default)
 - Backend/server-side logic (Route Handlers)
-- API endpoints (65+ route handlers across 14 domains)
+- API endpoints (66 route handlers across 14 domains)
 - Authentication logic
 - Email operations
 - Database communication
@@ -121,7 +121,7 @@ Handles:
 
 ## 3. Backend
 
-### Next.js Route Handlers (65+ endpoints)
+### Next.js Route Handlers (66 endpoints)
 
 The backend API layer is organized into 14 domains:
 
@@ -522,7 +522,7 @@ npm install -D typescript @types/node @types/react @types/react-dom @types/pg @t
 | Maps | Leaflet + React-Leaflet |
 | PWA/Offline | Serwist (service worker) |
 | Markdown | react-markdown + remark-gfm |
-| Backend/API | Next.js Route Handlers (65+ endpoints) |
+| Backend/API | Next.js Route Handlers (66 endpoints) |
 | Database | Neon Lakebase Postgres |
 | Database Client | pg (pooled) |
 | Vector Embeddings | pgvector + Ollama |
